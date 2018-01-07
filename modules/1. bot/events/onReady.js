@@ -1,5 +1,5 @@
 async function onReady () {
-  console.log('hi');
+  this.log('Bot successfully logged in');
 }
 
 module.exports = onReady;

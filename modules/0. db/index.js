@@ -16,10 +16,10 @@ function init () {
         this.db[dbFunction] = dbFunctions[dbFunction].bind(this);
       }
     })
-    .catch(e => {
-      this.log(`Failed to connect to MongoDB: ${e.message}\nExiting...`, 'error');
-      process.exit();
-    });
+    // .catch(e => {
+    //   this.log(`Failed to connect to MongoDB: ${e.message}\nExiting...`, 'error');
+    //   process.exit();
+    // });
 }
 
 module.exports = init;

@@ -1,0 +1,28 @@
+{
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "script"
+    },
+    "env": {
+        "node": true,
+        "es6": true,
+        "browser": true
+    },
+    "rules": {
+        "semi": ["warn", "always"],
+        "quotes": ["warn", "single"],
+        "no-extra-parens": "warn",
+        "space-before-function-paren": ["warn", "always"],
+        "no-whitespace-before-property": "warn",
+        "curly": ["warn", "all"],
+        "eqeqeq": "warn",
+        "space-before-blocks": ["warn", "always"],
+        "prefer-arrow-callback": "warn",
+        "prefer-const": "warn",
+        "prefer-template": "warn",
+        "indent": ["warn", 2, { "MemberExpression": 1 }],
+        "no-trailing-spaces": "warn",
+        "no-unused-vars": "warn"
+    }
+}

@@ -7,6 +7,10 @@ function init () {
       this.dbClient = dbClient;
       this.dbConn = dbClient.db('tweetcord');
 
+      this.dbTables = {
+        'prefixes': this.dbConn.collection('prefixes')
+      };
+
       this.db = {};
       for (const dbFunction in dbFunctions) {
         this.db[dbFunction] = dbFunctions[dbFunction].bind(this);

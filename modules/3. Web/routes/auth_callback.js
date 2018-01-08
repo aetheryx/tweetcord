@@ -6,7 +6,7 @@ async function init () {
       req.query.oauth_verifier,
       async (err, OAuthAccessToken, OAuthAccessSecret, results) => {
         if (err) {
-          res.status(500).send(`Error getting OAuth2 access token: ${err.message}`);
+          res.status(500).send(`Error getting OAuth access token: ${err.message}`);
         } else {
           req.session.OAuthAccessToken = OAuthAccessToken;
           req.session.OAuthAccessSecret = OAuthAccessSecret;

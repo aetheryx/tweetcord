@@ -2,7 +2,7 @@ async function init () {
   this.app.get('/auth/twitter', async (req, res) => {
     this.OAuthClient.getOAuthRequestToken((err, OAuthToken, OAuthSecret) => {
       if (err) {
-        res.status(500).send(`Error getting OAuth2 request token: ${err.message}`);
+        res.status(500).send(`Error getting OAuth request token: ${err.message}`);
       } else {
         req.session.OAuthToken = OAuthToken;
         req.session.OAuthSecret = OAuthSecret;

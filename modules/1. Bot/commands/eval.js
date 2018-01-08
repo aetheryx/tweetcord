@@ -16,7 +16,7 @@ async function evalCommand (msg, args) {
         inspect(result, { depth: 0 }) :
         inspect(result, { depth: 1 });
     }
-    result = result.replace(new RegExp(this.config.bot.token, 'gi'), 'i think the fuck not you trick ass bitch');
+    result = result.replace(new RegExp(`${this.config.bot.token}|${this.config.twitter.APIKey}|${this.config.twitter.secret}`, 'gi'), 'i think the fuck not you trick ass bitch');
   } catch (err) {
     result = err.message;
   }

@@ -8,7 +8,8 @@ function init () {
       this.dbConn = dbClient.db('tweetcord');
 
       this.dbTables = {
-        'prefixes': this.dbConn.collection('prefixes')
+        'prefixes': this.dbConn.collection('prefixes'),
+        'links': this.dbConn.collection('links')
       };
 
       this.db = {};

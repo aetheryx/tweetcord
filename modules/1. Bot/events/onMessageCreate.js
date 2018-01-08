@@ -5,7 +5,7 @@ async function onMessageCreate (msg) {
 
   const mentionPrefix = msg.content.match(new RegExp(`^<@!*${this.bot.user.id}>`));
   const prefix = mentionPrefix ? `${mentionPrefix[0]} ` : await this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
-  if (!msg.content.startsWith(prefix)) {
+  if (!msg.content.toLowerCase().startsWith(prefix)) {
     return;
   }
 

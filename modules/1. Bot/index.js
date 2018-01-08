@@ -51,7 +51,7 @@ function init () {
       }
 
       if (content.embed && !content.embed.color) {
-        content.embed.color = this.config.embedColor;
+        content.embed.color = _this.config.bot.embedColor;
       }
 
       try {

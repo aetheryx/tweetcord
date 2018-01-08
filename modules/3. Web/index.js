@@ -11,6 +11,8 @@ function init () {
   app.listen(this.config.web.port || 42069, this.log.bind(null, 'Express server ready'));
   app.use(cookies());
   app.use(session({ secret: this.config.web.secret || 'i like bewbies' }));
+  app.set('views', `${__dirname}/views`);
+  app.set('view engine', 'ejs');
   // app.use(express.static(__dirname));
 
   for (const route in routes) {

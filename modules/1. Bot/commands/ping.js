@@ -1,4 +1,4 @@
-async function pingCommand(msg) {
+async function pingCommand (msg) {
   const shard = msg.channel.guild ?
     msg.channel.guild.shard :
     this.client.shards.get(0);

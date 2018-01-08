@@ -7,7 +7,7 @@ function init () {
     this.config.twitter.APIKey,
     this.config.twitter.secret,
     '1.0A',
-    this.config.callbackURL || 'http://localhost:42069/auth/callback',
+    `${this.config.web.domain || 'http://localhost:42069'}/auth/callback`,
     this.config.signSignature || 'HMAC-SHA1'
   );
 

@@ -10,6 +10,10 @@ class Tweetcord {
     for (const module in modules) {
       modules[module].call(this);
     }
+
+    if (!this.config.web.domain) {
+      this.config.web.domain = 'http://localhost:42069';
+    }
   }
 }
 

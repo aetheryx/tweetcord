@@ -44,7 +44,7 @@ class RestClient {
     this.discordToken = bot.token;
   }
 
-  async getTagById (id) {
+  async getTagByID (id) {
     const res = await get({
       url: `discordapp.com/api/v6/users/${id}`,
       headers: {
@@ -55,13 +55,13 @@ class RestClient {
     return res.status === 200 && `${res.body.username}#${res.body.discriminator}` || null;
   }
 
-  async tweet (token, secret, body) {
+  tweet (token, secret, status) {
     return new Promise((resolve, reject) => {
       this.mainClass.OAuthClient.post(
         'https://api.twitter.com/1.1/statuses/update.json',
         token,
         secret,
-        { status: body },
+        { status },
         (err, res) => {
           if (err) {
             reject(err);
@@ -69,6 +69,26 @@ class RestClient {
             try {
               res = JSON.parse(res);
             } catch (_) {} // eslint-disable-line no-empty
+            resolve(res);
+          }
+        }
+      );
+    });
+  }
+
+  getTimeline (token, secret, sinceID = 1, count = 1) {
+    return new Promise((resolve, reject) => {
+      this.mainClass.OAuthClient.get(
+        `https://api.twitter.com/1.1/statuses/home_timeline.json?count=${count}&since_id=${sinceID}`,
+        token,
+        secret,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            try {
+              res = JSON.parse(res);
+            } catch (_) { } // eslint-disable-line no-empty
             resolve(res);
           }
         }

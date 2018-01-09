@@ -23,7 +23,7 @@ async function tweetCommand (msg, args) {
 
   if (res) {
     return {
-      title: 'Tweet successfuly sent',
+      title: 'Tweet successfully sent',
       description: `View [here](https://twitter.com/${res.user.screen_name}/status/${res.id_str})`,
       timestamp: new Date()
     };

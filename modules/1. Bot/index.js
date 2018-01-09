@@ -1,7 +1,6 @@
 const { Client } = require('eris');
 const fs = require('fs');
 const events = require(`${__dirname}/events`);
-const MessageCollector = require(`${__dirname}/misc/MessageCollector.js`);
 
 function init () {
   return new Promise(resolve => {
@@ -15,13 +14,14 @@ function init () {
         this.commands = {};
         this.loadCommands();
 
-        this.MessageCollector = new MessageCollector(this);
+        this.MessageCollector = new _this.utils.MessageCollector(this);
 
         this
           .once('ready', resolve)
           .on('ready', events.onReady.bind(_this))
           .on('messageCreate', events.onMessageCreate.bind(_this))
-          .on('messageReactionAdd', events.onMessageReactionAdd.bind(_this));
+          .on('messageReactionAdd', events.onMessageReaction.add.bind(_this))
+          .on('messageReactionRemove', events.onMessageReaction.remove.bind(_this));
       }
 
       async loadCommands () {

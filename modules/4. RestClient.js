@@ -42,6 +42,8 @@ class RestClient {
     this.OAuthKey = twitter.APIKey;
     this.OAuthSecret = twitter.secret;
     this.discordToken = bot.token;
+
+    this.BASE_URL = 'https://api.twitter.com/1.1';
   }
 
   async getTagByID (id) {
@@ -55,13 +57,13 @@ class RestClient {
     return res.status === 200 && `${res.body.username}#${res.body.discriminator}` || null;
   }
 
-  tweet (token, secret, status) {
+  genericPost (endpoint, token, secret, params = {}) {
     return new Promise((resolve, reject) => {
       this.mainClass.OAuthClient.post(
-        'https://api.twitter.com/1.1/statuses/update.json',
+        this.BASE_URL + endpoint,
         token,
         secret,
-        { status },
+        params,
         (err, res) => {
           if (err) {
             reject(err);
@@ -76,10 +78,10 @@ class RestClient {
     });
   }
 
-  getTimeline (token, secret, sinceID = 1, count = 1) {
+  genericGet (endpoint, token, secret) {
     return new Promise((resolve, reject) => {
       this.mainClass.OAuthClient.get(
-        `https://api.twitter.com/1.1/statuses/home_timeline.json?count=${count}&since_id=${sinceID}`,
+        this.BASE_URL + endpoint,
         token,
         secret,
         (err, res) => {
@@ -94,6 +96,57 @@ class RestClient {
         }
       );
     });
+  }
+
+  async tweet (token, secret, status) {
+    return this.genericPost(
+      '/statuses/update.json',
+      token,
+      secret,
+      { status }
+    );
+  }
+
+  async like (token, secret, id) {
+    return this.genericPost(
+      '/favorites/create.json',
+      token,
+      secret,
+      { id }
+    );
+  }
+
+  async unlike (token, secret, id) {
+    return this.genericPost(
+      '/favorites/destroy.json',
+      token,
+      secret,
+      { id }
+    )
+  }
+
+  async retweet (token, secret, id) {
+    return this.genericPost(
+      `/statuses/retweet/${id}.json`,
+      token,
+      secret
+    );
+  }
+
+  async unretweet (token, secret, id) {
+    return this.genericPost(
+      `/statuses/unretweet/${id}.json`,
+      token,
+      secret
+    );
+  }
+
+  async getTimeline (token, secret, sinceID = 1, count = 1) {
+    return this.genericGet(
+      `/statuses/home_timeline.json?count=${count}&since_id=${sinceID}`,
+      token,
+      secret
+    );
   }
 }
 

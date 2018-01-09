@@ -1,5 +1,4 @@
 async function postTweets () {
-  console.log('cron ran');
   const timelines = await this.db.getAllTimelines();
 
   for (const timeline of timelines) {
@@ -8,14 +7,17 @@ async function postTweets () {
       return; // TODO: remove link
     }
 
-    const tweets = (await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20).catch(console.log))
+    const tweets = (await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20))
       .sort((a, b) => {
         const [dateA, dateB] = [a, b].map(tweet => new Date(tweet.created_at).getTime());
         return dateA - dateB;
       });
 
+
     for (const tweet of tweets) {
-      this.bot.sendMessage(timeline.channelID, {
+      const hiddenMetadata = `[\u200b]( "${tweet.id_str}|${timeline.userID}")`;
+
+      const msg = await this.bot.sendMessage(timeline.channelID, {
         title: 'New Tweet',
         author: {
           name: `@${tweet.user.name}`,
@@ -23,9 +25,15 @@ async function postTweets () {
           icon_url: tweet.user.profile_image_url
         },
         url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
-        description: tweet.text,
+        description: tweet.text + hiddenMetadata,
         timestamp: new Date(tweet.created_at)
       });
+      if (msg) {
+        (async () => {
+          await msg.addReaction('twitterLike:400076857493684226');
+          await msg.addReaction('twitterRetweet:400076876430835722')
+        })();
+      }
     }
     if (tweets[0]) {
       this.dbTables['links'].updateOne(

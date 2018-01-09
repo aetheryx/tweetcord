@@ -20,7 +20,8 @@ function init () {
         this
           .once('ready', resolve)
           .on('ready', events.onReady.bind(_this))
-          .on('messageCreate', events.onMessageCreate.bind(_this));
+          .on('messageCreate', events.onMessageCreate.bind(_this))
+          .on('messageReactionAdd', events.onMessageReactionAdd.bind(_this));
       }
 
       async loadCommands () {

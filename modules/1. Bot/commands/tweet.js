@@ -35,4 +35,4 @@ module.exports = {
   name: 'tweet',
   aliases: ['weet'],
   description: ''
-}
+};

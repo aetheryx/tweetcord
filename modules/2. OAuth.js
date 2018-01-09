@@ -1,6 +1,6 @@
 const { OAuth } = require('oauth');
 
-function init () {
+async function init () {
   const OAuthClient = new OAuth(
     'https://api.twitter.com/oauth/request_token',
     'https://api.twitter.com/oauth/access_token',

@@ -1,4 +1,5 @@
 async function postTweets () {
+  // return
   const timelines = await this.db.getAllTimelines();
 
   for (const timeline of timelines) {
@@ -31,10 +32,11 @@ async function postTweets () {
       if (msg) {
         (async () => {
           await msg.addReaction('twitterLike:400076857493684226');
-          await msg.addReaction('twitterRetweet:400076876430835722')
+          msg.addReaction('twitterRetweet:400076876430835722');
         })();
       }
     }
+
     if (tweets[0]) {
       this.dbTables['links'].updateOne(
         { _id: link._id },

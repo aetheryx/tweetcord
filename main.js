@@ -1,5 +1,7 @@
-const modules = require('./modules');
-const util = require('./util');
+const botPackage = require(`${__dirname}/package.json`);
+
+const modules = require(`${__dirname}/modules`);
+const util = require(`${__dirname}/util`);
 
 class Tweetcord {
   constructor () {
@@ -18,6 +20,10 @@ class Tweetcord {
     for (const module in modules) {
       await modules[module].call(this);
     }
+  }
+
+  get package () {
+    return botPackage;
   }
 }
 

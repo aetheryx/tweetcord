@@ -16,6 +16,7 @@ async function tweetCommand (msg, args) {
     linkInfo.OAuthAccessSecret,
     args
   ).catch(e => {
+    console.log(e);
     if (e.data.includes('"code":187')) {
       this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
     }

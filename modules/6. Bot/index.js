@@ -4,24 +4,24 @@ const events = require(`${__dirname}/events`);
 
 function init () {
   return new Promise(resolve => {
-    const _this = this;
+    const mainClass = this;
 
     class Bot extends Client {
       constructor (props) {
-        super(_this.config.bot.token, props);
+        super(mainClass.config.bot.token, props);
         this.connect();
 
         this.commands = {};
         this.loadCommands();
 
-        this.MessageCollector = new _this.utils.MessageCollector(this);
+        this.MessageCollector = new mainClass.utils.MessageCollector(this);
 
         this
           .once('ready', resolve)
-          .on('ready', events.onReady.bind(_this))
-          .on('messageCreate', events.onMessageCreate.bind(_this))
-          .on('messageReactionAdd', events.onMessageReaction.add.bind(_this))
-          .on('messageReactionRemove', events.onMessageReaction.remove.bind(_this));
+          .on('ready', events.onReady.bind(mainClass))
+          .on('messageCreate', events.onMessageCreate.bind(mainClass))
+          .on('messageReactionAdd', events.onMessageReaction.add.bind(mainClass))
+          .on('messageReactionRemove', events.onMessageReaction.remove.bind(mainClass));
       }
 
       async loadCommands () {
@@ -42,11 +42,11 @@ function init () {
               }, command);
             } catch (err) {
               failed++;
-              _this.log(`Failed to load command ${file}: \n${err.stack}`, 'error');
+              mainClass.log(`Failed to load command ${file}: \n${err.stack}`, 'error');
             }
           });
 
-          _this.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
+          mainClass.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
         });
 
       }
@@ -57,7 +57,7 @@ function init () {
         }
 
         if (content.embed && !content.embed.color) {
-          content.embed.color = _this.config.bot.embedColor;
+          content.embed.color = mainClass.config.bot.embedColor;
         }
 
         try {
@@ -73,7 +73,7 @@ function init () {
             !err.message.includes('Cannot send messages to this user') &&
             !err.message.includes('Missing Access')
           ) {
-            _this.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
+            mainClass.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
           } else {
             return false;
           }

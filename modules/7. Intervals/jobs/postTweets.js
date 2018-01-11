@@ -1,5 +1,5 @@
 async function postTweets () {
-  // return
+  return
   const timelines = await this.db.getAllTimelines();
 
   for (const timeline of timelines) {

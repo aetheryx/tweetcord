@@ -1,4 +1,4 @@
-const https = require('https');
+const { request } = require('https');
 
 function get (options) {
   return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ function get (options) {
 
     const output = { body: '' };
 
-    const req = https.request(options, (res) => {
+    const req = request(options, (res) => {
       output.status = res.statusCode;
       output.headers = res.headers;
 

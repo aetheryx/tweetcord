@@ -8,22 +8,17 @@ function get (options) {
       path: `/${url.join('/')}`
     }, options);
 
-    const output = { body: '' };
+    let output = '';
 
     const req = request(options, (res) => {
-      output.status = res.statusCode;
-      output.headers = res.headers;
-
       res.on('data', (chunk) => {
-        output.body += chunk;
+        output += chunk;
       });
 
       res.on('end', () => {
-        if (output.body.startsWith('{')) {
-          try {
-            output.body = JSON.parse(output.body);
-          } catch (_) { } // eslint-disable-line no-empty
-        }
+        try {
+          output = JSON.parse(output);
+        } catch (_) { } // eslint-disable-line no-empty
         resolve(output);
       });
     });

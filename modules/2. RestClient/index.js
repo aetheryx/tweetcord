@@ -19,7 +19,7 @@ class RestClient {
     return res.status === 200 && `${res.body.username}#${res.body.discriminator}` || null;
   }
 
-  async genericPost (endpoint, secret, qs = '', body = '', params = {}) {
+  async genericPost (endpoint, secret, qs = '', params = {}) {
     const url = this.BASE_URL + endpoint;
     const OAuthData = this.mainClass.OAuthClient.signHeaders('POST', url, params, secret).join(',');
 
@@ -28,7 +28,7 @@ class RestClient {
       headers: {
         'Authorization': `OAuth ${OAuthData}`
       }
-    }, body);
+    });
 
     return res;
   }
@@ -54,16 +54,16 @@ class RestClient {
       '/statuses/home_timeline.json',
       secret,
       { count, since_id },
-      { oauth_token: token }
+      { oauth_token: token, count, since_id }
     );
   }
+
 
   async tweet (token, secret, status) {
     return this.genericPost(
       '/statuses/update.json',
       secret,
       this.mainClass.utils.qs.create({ status }),
-      status,
       { oauth_token: token, status }
     );
   }
@@ -71,34 +71,36 @@ class RestClient {
   async like (token, secret, id) {
     return this.genericPost(
       '/favorites/create.json',
-      token,
       secret,
-      { id }
+      this.mainClass.utils.qs.create({ id }),
+      { oauth_token: token, id }
     );
   }
 
   async unlike (token, secret, id) {
     return this.genericPost(
       '/favorites/destroy.json',
-      token,
       secret,
-      { id }
+      this.mainClass.utils.qs.create({ id }),
+      { oauth_token: token, id }
     );
   }
 
   async retweet (token, secret, id) {
     return this.genericPost(
       `/statuses/retweet/${id}.json`,
-      token,
-      secret
+      secret,
+      this.mainClass.utils.qs.create({ id }),
+      { oauth_token: token, id }
     );
   }
 
   async unretweet (token, secret, id) {
     return this.genericPost(
       `/statuses/unretweet/${id}.json`,
-      token,
-      secret
+      secret,
+      this.mainClass.utils.qs.create({ id }),
+      { oauth_token: token, id }
     );
   }
 }

@@ -1,5 +1,4 @@
 async function postTweets () {
-  return
   const timelines = await this.db.getAllTimelines();
 
   for (const timeline of timelines) {
@@ -7,14 +6,16 @@ async function postTweets () {
     if (!link) {
       return; // TODO: remove link
     }
-
-    const tweets = (await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20))
-      .sort((a, b) => {
-        const [dateA, dateB] = [a, b].map(tweet => new Date(tweet.created_at).getTime());
-        return dateA - dateB;
-      });
+    
+    let tweets = await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20);
 
 
+    tweets = tweets.sort((a, b) => {
+      const [dateA, dateB] = [a, b].map(tweet => new Date(tweet.created_at).getTime());
+      return dateA - dateB;
+    });
+
+      
     for (const tweet of tweets) {
       const hiddenMetadata = `[\u200b]( "${tweet.id_str}|${timeline.userID}")`;
 
@@ -30,6 +31,7 @@ async function postTweets () {
         timestamp: new Date(tweet.created_at)
       });
       if (msg) {
+  
         (async () => {
           await msg.addReaction('twitterLike:400076857493684226');
           msg.addReaction('twitterRetweet:400076876430835722');

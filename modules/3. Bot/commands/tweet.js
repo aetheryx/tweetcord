@@ -15,12 +15,12 @@ async function tweetCommand (msg, args) {
     linkInfo.OAuthAccessToken,
     linkInfo.OAuthAccessSecret,
     args
-  ).catch(e => {
-    console.log(e);
-    if (e.data.includes('"code":187')) {
-      this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
-    }
-  });
+  );
+
+  if (res.errors && res.errors.find(e => e.code === 187)) {
+    return 'You\'ve already posted this tweet before.';
+  }
+
 
   if (res) {
     return {

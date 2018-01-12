@@ -36,6 +36,7 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
 
   const res = await this.RestClient[action](link.OAuthAccessToken, link.OAuthAccessSecret, tweetID)
     .catch(async e => {
+      return console.log(e);
       if (e.data.includes('"code":144')) {
         message = await this.bot.sendMessage(message.channel.id, {
           color: 0xFF0000,
@@ -44,6 +45,8 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
         });
       }
     });
+
+    console.log(res)
 
   if (res) {
     message = await this.bot.sendMessage(message.channel.id, {

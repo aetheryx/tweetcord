@@ -1,4 +1,4 @@
-async function setupCommand (msg) {
+async function setupCommand (msg) { // TODO: perm check on this command
   if (!msg.channelMentions[0]) {
     return 'You need to mention a channel.';
   }

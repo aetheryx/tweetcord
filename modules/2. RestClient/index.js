@@ -9,6 +9,10 @@ class RestClient {
   }
 
   async getTagByID (id) {
+    const cachedUser = this.mainClass.bot.users.get(id);
+    if (cachedUser) {
+      return `${cachedUser.username}#${cachedUser.discriminator}`;
+    }
     const res = await this.mainClass.utils.get({
       url: `discordapp.com/api/v6/users/${id}`,
       headers: {
@@ -16,7 +20,11 @@ class RestClient {
       }
     });
 
-    return res.status === 200 && `${res.body.username}#${res.body.discriminator}` || null;
+    if (res.username) {
+      return `${res.username}#${res.discriminator}`;
+    } else {
+      throw res;
+    }
   }
 
   async genericPost (endpoint, secret, qs = '', params = {}) {
@@ -29,6 +37,10 @@ class RestClient {
         'Authorization': `OAuth ${OAuthData}`
       }
     });
+
+    if (res.errors) {
+      throw res;
+    }
 
     return res;
   }
@@ -45,6 +57,7 @@ class RestClient {
         'Authorization': `OAuth ${OAuthData}`
       }
     });
+
 
     return res;
   }

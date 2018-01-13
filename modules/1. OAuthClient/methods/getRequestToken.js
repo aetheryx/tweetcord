@@ -9,8 +9,6 @@ async function getRequestToken () {
       'Authorization':  `OAuth ${OAuthData}` }
   });
 
-  console.log(res);
-
   return this.utils.qs.parse(res);
 }
 

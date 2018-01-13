@@ -3,8 +3,7 @@
   async function submit () {
     const tag = document.getElementById('tag').value;
     if (!tag || !(/.*#[0-9]{4}/).test(tag)) {
-      console.log(tag);
-      return alert('Put something in the text area and click Submit.');
+      return alert('Put a valid Discord tag (username#discrimator) in the text area and click Submit.');
     }
 
     const res = await fetch('/getIDByTag', {
@@ -14,9 +13,12 @@
       cache: 'default'
     }).then(r => r.text());
 
-    console.log('hi');
 
-    window.location.replace(`/auth/twitter?id=${res}`);
+    if (res === '404') {
+      alert(`I was unable to find a user with the tag "${tag}". Are you sure you have a shared server with Tweetcord?`)
+    } else {
+      window.location.replace(`/auth/twitter?id=${res}`);
+    }
   }
 </script>
 

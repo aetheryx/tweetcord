@@ -1,4 +1,7 @@
 async function setupCommand (msg) { // TODO: perm check on this command
+  if (!msg.member.permission.has('manageChannels')) {
+    return 'You need the `Manage Channels` permission to set up a timeline channel.';
+  }  
   if (!msg.channelMentions[0]) {
     return 'You need to mention a channel.';
   }

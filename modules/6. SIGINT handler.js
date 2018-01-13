@@ -1,3 +1,5 @@
+const { inspect } = require('util');
+
 async function cleanExit () {
   if (this.config.dev) {
     process.exit();
@@ -16,7 +18,7 @@ async function cleanExit () {
 async function init () {
   process.on('SIGINT', cleanExit.bind(this));
   process.on('unhandledRejection', err => {
-    this.log(`Unhandled rejection: \n${err}`, 'error'); // eslint-disable-line no-console
+    this.log(`Unhandled rejection: \n${err.stack || err instanceof Object ? inspect(err) : err}`, 'error'); // eslint-disable-line no-console
   });
 }
 

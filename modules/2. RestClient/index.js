@@ -38,7 +38,7 @@ class RestClient {
       }
     });
 
-    if (res.errors) {
+    if (res.error || res.errors) {
       throw res;
     }
 
@@ -58,6 +58,9 @@ class RestClient {
       }
     });
 
+    if (res.errors || res.error) {
+      throw res;
+    }
 
     return res;
   }

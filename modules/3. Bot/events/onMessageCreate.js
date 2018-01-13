@@ -1,5 +1,7 @@
+const { inspect } = require('util');
+
 async function onMessageCreate (msg) {
-  if (msg.author.bot || !this.config.servers.includes(msg.channel.guild.id)) {
+  if (msg.author.bot || this.config.servers && !this.config.servers.includes(msg.channel.guild.id)) {
     return;
   }
 
@@ -39,8 +41,8 @@ async function onMessageCreate (msg) {
         }
       })
       .catch(e => {
-        this.log(e.stack, 'error');
-        msg.channel.createMessage(`Something went wrong while executing this command. The error has been logged. \nPlease join here (discord.gg/Yphr6WG) if the issue persists.\n\`\`\`${e.message}\`\`\``);
+        this.log(e.stack || inspect(e), 'error');
+        msg.channel.createMessage(`Something went wrong while executing this command. The error has been logged. \nPlease join here (discord.gg/Yphr6WG) if the issue persists.\n\`\`\`${e.message || inspect(e)}\`\`\``);
       });
   } else if (
     msg.mentions.find(u => u.id === this.client.user.id) &&

@@ -15,6 +15,9 @@ async function cleanExit () {
 
 async function init () {
   process.on('SIGINT', cleanExit.bind(this));
+  process.on('unhandledRejection', err => {
+    console.log(`Unhandled rejection: \n${err}`, 'error'); // eslint-disable-line no-console
+  });
 }
 
 module.exports = init;

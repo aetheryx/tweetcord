@@ -33,24 +33,29 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   const link = await this.db.getLink(ownerID);
 
   const action = actions[type][emoji.id];
+  const pastTense = (action.startsWith('un') ? 'un' : '') + (action.endsWith('like') ? 'liked' : 'retweeted');
 
   const res = await this.RestClient[action](link.OAuthAccessToken, link.OAuthAccessSecret, tweetID)
     .catch(async e => {
-      return console.log(e);
-      if (e.data.includes('"code":144')) {
-        message = await this.bot.sendMessage(message.channel.id, {
-          color: 0xFF0000,
-          description: `This tweet was deleted; I am unable to ${action} this tweet.`,
-          footer: { text: 'This message will self-destruct in 15 seconds.'}
-        });
+      let errorMessage;
+      if (e.errors[0].code === 139 || e.errors[0].code === 327) {
+        errorMessage = `You have already ${pastTense} this tweet.`;
       }
+      if (e.errors[0].code === 144) {
+        errorMessage = `This tweet was deleted, or you've never ${pastTense.replace(/un/, '')} this tweet.`;
+      }
+
+      message = await this.bot.sendMessage(message.channel.id, {
+        color: 0xFF0000,
+        description: `${errorMessage} I am unable to ${action} this tweet.`,
+        footer: { text: 'This message will self-destruct in 15 seconds.' }
+      });
     });
 
-    console.log(res)
 
   if (res) {
     message = await this.bot.sendMessage(message.channel.id, {
-      title: `Successfully ${action.startsWith('un') ? 'un' : ''}${action.endsWith('like') ? 'liked' : 'retweeted'} the following tweet:`,
+      title: `Successfully ${pastTense} the following tweet:`,
       description: message.embeds[0].description,
       footer: { text: 'This message will self-destruct in 15 seconds.' }
     });

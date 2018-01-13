@@ -1,3 +1,12 @@
+function percentEncode (str) {
+  return encodeURIComponent(str)
+    .replace(/!/g, '%21')
+    .replace(/'/g, '%27')
+    .replace(/\(/g, '%28')
+    .replace(/\)/g, '%29')
+    .replace(/\*/g, '%2A');
+}
+
 function parse (querystring) {
   const output = {};
 
@@ -21,10 +30,10 @@ function create (obj) {
   const querystrings = [];
 
   for (const item in obj) {
-    querystrings.push(`${encodeURIComponent(item)}=${encodeURIComponent(obj[item])}`);
+    querystrings.push(`${percentEncode(item)}=${percentEncode(obj[item])}`);
   }
 
   return `?${querystrings.join('&')}`;
 }
 
-module.exports = { parse, create }
+module.exports = { parse, create };

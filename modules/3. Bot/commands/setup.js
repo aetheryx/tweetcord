@@ -23,7 +23,7 @@ async function setupCommand (msg) { // TODO: perm check on this command
 
   this.bot.sendMessage(msg.channel.id, `Are you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able to read any new tweets on your timeline.\n\nRespond with \`yes\` or \`no\`.`);
 
-  const message = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 5e3, (m) => ['y', 'n', 'yes', 'no'].includes(m.content.toLowerCase()));
+  const message = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['y', 'n', 'yes', 'no'].includes(m.content.toLowerCase()));
   if (!message) {
     return 'Prompt timed out.';
   }

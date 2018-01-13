@@ -52,5 +52,5 @@ async function postTweets () {
 
 module.exports = {
   func: postTweets,
-  interval: 60e3
+  interval: 61e3
 };

@@ -1,5 +1,5 @@
 async function onMessageCreate (msg) {
-  if (msg.author.bot) {
+  if (msg.author.bot || !this.config.servers.includes(msg.channel.guild.id)) {
     return;
   }
 

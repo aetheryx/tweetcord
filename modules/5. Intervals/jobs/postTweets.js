@@ -8,7 +8,9 @@ async function postTweets () {
     }
     
     let tweets = await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20);
-
+    if (!tweets.sort) {
+      return console.log(tweets);
+    }
 
     tweets = tweets.sort((a, b) => {
       const [dateA, dateB] = [a, b].map(tweet => new Date(tweet.created_at).getTime());

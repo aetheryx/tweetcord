@@ -14,7 +14,7 @@ async function statsCommand (msg) {
     url: 'https://tweetcord.xyz',
     fields: [
       { name: 'Guilds', value: this.bot.guilds.size, inline: true },
-      { name: 'Uptime', value: this.util.parseDuration(process.uptime()), inline: true },
+      { name: 'Uptime', value: this.utils.parseDuration(process.uptime()), inline: true },
       { name: 'Ping', value: `${shard.latency.toFixed()} ms`, inline: true },
       { name: 'Libraries', value: [
         `[Eris](https://abal.moe/Eris) v${erisVersion}`,

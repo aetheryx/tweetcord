@@ -29,6 +29,7 @@ class RestClient {
 
   async genericPost (endpoint, secret, qs = '', params = {}) {
     const url = this.BASE_URL + endpoint;
+    this.log(url);
     const OAuthData = this.mainClass.OAuthClient.signHeaders('POST', url, params, secret).join(',');
 
     const res = await this.mainClass.utils.post({
@@ -47,6 +48,7 @@ class RestClient {
 
   async genericGet (endpoint, secret, qsData, params) {
     const url = this.BASE_URL + endpoint;
+    this.log(url);
     const qs = this.mainClass.utils.qs.create(qsData);
 
     const OAuthData = this.mainClass.OAuthClient.signHeaders('GET', url, params, secret).join(', ');

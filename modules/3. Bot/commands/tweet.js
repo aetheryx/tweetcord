@@ -15,17 +15,17 @@ async function tweetCommand (msg, args) {
     linkInfo.OAuthAccessToken,
     linkInfo.OAuthAccessSecret,
     args
-  );
-
-  if (res.errors && res.errors.find(e => e.code === 187)) {
-    return 'You\'ve already posted this tweet before.';
-  }
+  ).catch(e => {
+    if (e.errors && e.errors.find(e => e.code === 187)) {
+      this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
+    }
+  });
 
   if (res) {
-    console.log(res)
     return {
       title: 'Tweet successfully sent',
-      description: `View [here](https://twitter.com/${res.user.screen_name}/status/${res.id_str})`,
+      url: `https://twitter.com/${res.user.screen_name}/status/${res.id_str}`,
+      description: res.text,
       timestamp: new Date()
     };
   }

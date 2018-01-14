@@ -9,7 +9,7 @@ async function postTweets () {
 
     let tweets = await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20);
     if (!tweets.sort) {
-      this.log(link);
+      this.log('suh');
       return this.log(tweets);
     }
 

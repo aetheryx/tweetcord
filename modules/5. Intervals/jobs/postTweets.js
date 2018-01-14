@@ -6,10 +6,11 @@ async function postTweets () {
     if (!link) {
       return; // TODO: remove link
     }
-    
+
     let tweets = await this.RestClient.getTimeline(link.OAuthAccessToken, link.OAuthAccessSecret, link.latestTweetID, 20);
     if (!tweets.sort) {
-      return console.log(tweets);
+      this.log(link);
+      return this.log(tweets);
     }
 
     tweets = tweets.sort((a, b) => {

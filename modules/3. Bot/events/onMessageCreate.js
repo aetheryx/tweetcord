@@ -34,6 +34,8 @@ async function onMessageCreate (msg) {
       return;
     }
 
+    this.log(`${command.name} ${args.join(' ')}`);
+
     command.command.call(this, msg, args)
       .then(res => {
         if (res && (typeof res === 'string' || res instanceof Object)) {

@@ -19,7 +19,7 @@ async function postTweets () {
 
       
     for (const tweet of tweets) {
-      const hiddenMetadata = `[\u200b]( "${tweet.id_str}|${timeline.userID}")`;
+      const hiddenMetadata = ` [\u200b]( "${tweet.id_str}|${timeline.userID}")`;
 
       const msg = await this.bot.sendMessage(timeline.channelID, {
         title: 'New Tweet',

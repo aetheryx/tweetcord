@@ -32,7 +32,7 @@ async function setupCommand (msg) { // TODO: perm check on this command
     return 'Cancelled.';
   } else {
     await this.db.addTimeline(msg.channelMentions[0], msg.author.id);
-    return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new tweets will now appear there.`;
+    return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new tweets will now appear there.\n*Note: because of Twitter ratelimits, it can take up to 60 seconds for a new tweet to appear.*`;
   }
 }
 

@@ -26,11 +26,11 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
 
   const [tweetID, ownerID] = message.embeds[0].description.match(/"(.*)"\)/)[1].split('|');
 
-  if (ownerID !== userID) {
+  const link = await this.db.getLink(userID);
+
+  if (!link) {
     return;
   }
-
-  const link = await this.db.getLink(ownerID);
 
   const action = actions[type][emoji.id];
   const pastTense = (action.startsWith('un') ? 'un' : '') + (action.endsWith('like') ? 'liked' : 'retweeted');

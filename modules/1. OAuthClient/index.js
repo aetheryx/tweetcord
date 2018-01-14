@@ -12,6 +12,7 @@ class OAuthClient {
   }
 
   signHeaders (method, url, props = {}, secret = '') {
+    this.log(url);
     let headers = [];
     for (const prop in props) {
       headers.push([ prop, props[prop] ]);

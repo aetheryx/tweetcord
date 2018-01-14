@@ -35,11 +35,6 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
 
   const action = actions[type][emoji.id];
 
-  this.log(link);
-  this.log(userID);
-  this.log(type);
-  this.log(action);
-
   const pastTense = (action.startsWith('un') ? 'un' : '') + (action.endsWith('like') ? 'liked' : 'retweeted');
 
   const res = await this.RestClient[action](link.OAuthAccessToken, link.OAuthAccessSecret, tweetID)

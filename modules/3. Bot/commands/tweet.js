@@ -1,5 +1,8 @@
 async function tweetCommand (msg, args) {
   args = args.join(' ');
+  if (!args) {
+    return 'Missing required arguments.';
+  }
 
   const linkInfo = await this.db.getLink(msg.author.id);
 

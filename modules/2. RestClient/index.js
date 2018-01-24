@@ -27,6 +27,27 @@ class RestClient {
     }
   }
 
+  async streamTweets (endpoint, secret, qs = '', params = {}) {
+    const url = 'userstream.twitter.com/1.1' + endpoint;
+    const OAuthData = this.mainClass.OAuthClient.signHeaders('POST', url, params, secret).join(',');
+
+    const res = await this.mainClass.utils.post({
+      url: url + qs,
+      headers: {
+        'Authorization': `OAuth ${OAuthData}`,
+        'User-Agent': 'aetheryx',
+        'content-length': '0'
+      }
+    });
+
+    if (res.error || res.errors) {
+      throw res;
+    }
+
+    
+    return res;
+  }
+
   async genericPost (endpoint, secret, qs = '', params = {}) {
     const url = this.BASE_URL + endpoint;
     const OAuthData = this.mainClass.OAuthClient.signHeaders('POST', url, params, secret).join(',');
@@ -73,7 +94,6 @@ class RestClient {
       { oauth_token: token, count, since_id }
     );
   }
-
 
   async tweet (token, secret, status) {
     return this.genericPost(

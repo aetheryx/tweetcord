@@ -13,6 +13,8 @@ function post (options, body = '') {
         headers: {}
       }, options);
 
+      console.log(postOptions);
+
       let output = '';
 
       const req = request(postOptions, (res) => {
@@ -23,6 +25,7 @@ function post (options, body = '') {
         res.on('end', () => {
           try {
             output = JSON.parse(output);
+            console.log(output);
           } catch (_) {} // eslint-disable-line no-empty
           resolve(output);
         });
@@ -31,6 +34,16 @@ function post (options, body = '') {
       req.on('error', (err) => {
         reject(err);
       });
+
+     
+      !options.url.includes('tweet') && req.on('response', (r) => {
+        let f = '';
+        r.on('data', (c) => { f += c.toString() });
+        r.on('end', () => {
+          console.log(f);
+        })
+      });
+
 
       req.write(data);
       req.end();

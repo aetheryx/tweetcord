@@ -12,7 +12,9 @@ class OAuthClient {
   }
 
   signHeaders (method, url, props = {}, secret = '') {
-    this.mainClass.log(url);
+    if (!url.includes('home_timeline')) {
+      this.mainClass.log(url);
+    }
     let headers = [];
     for (const prop in props) {
       headers.push([ prop, props[prop] ]);

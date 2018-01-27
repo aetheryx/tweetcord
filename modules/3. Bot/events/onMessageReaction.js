@@ -32,12 +32,11 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
     return;
   }
 
-
   const action = actions[type][emoji.id];
 
   const pastTense = (action.startsWith('un') ? 'un' : '') + (action.endsWith('like') ? 'liked' : 'retweeted');
 
-  const res = await this.RestClient[action](link.OAuthAccessToken, link.OAuthAccessSecret, tweetID)
+  const res = await this.RestClient[action](link.OAuthAccessToken, link.OAuthAccessSecret, { id: tweetID })
     .catch(async e => {
       let errorMessage;
       if (e.errors[0].code === 139 || e.errors[0].code === 327) {

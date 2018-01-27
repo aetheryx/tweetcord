@@ -1,5 +1,3 @@
-
-
 async function init () {
   const _this = this;
 
@@ -8,8 +6,38 @@ async function init () {
       this.OAuthKey = _this.config.twitter.APIKey;
       this.OAuthSecret = _this.config.twitter.secret;
 
-      this.BASE_URL = 'api.twitter.com/1.1';
+      this.BASE_URL = 'api.twitter.com/1.1/';
       this.STREAM_URL = 'userstream.twitter.com/1.1/user.json';
+
+      this.buildRoutes();
+    }
+
+    buildRoutes () {
+      const routes = {
+        'tweet': 'statuses/update.json',
+        'like': 'favorites/create.json',
+        'unlike': 'favorites/destroy.json',
+        'retweet': 'statuses/retweet/:id.json',
+        'unretweet': 'statuses/unretweet/:id.json'
+      };
+
+      for (const route in routes) {
+        this[route] = async (token, secret, params) => {
+          let url = routes[route];
+          for (const param in params) {
+            if (url.includes(`:${param}`)) {
+              url = url.replace(`:${param}`, params[param]);
+            }
+          }
+
+          return this.genericPost(
+            routes[route],
+            secret,
+            _this.utils.qs.create(params),
+            Object.assign({ oauth_token: token }, params)
+          );
+        };
+      }
     }
 
     async getTagByID (id) {
@@ -31,11 +59,19 @@ async function init () {
       }
     }
 
-    async createTweetStream (token, secret) {
-      const OAuthData = _this.OAuthClient.signHeaders('POST', this.STREAM_URL, { oauth_token: token, with: 'followings' }, secret).join(',');
+    async createTweetStream (token, secret, withFollowers) {
+      withFollowers = withFollowers
+        ? { with: 'followings' }
+        : { with: 'user' };
+      const OAuthData = _this.OAuthClient.signHeaders(
+        'POST',
+        this.STREAM_URL,
+        Object.assign(withFollowers, { oauth_token: token }),
+        secret
+      ).join(',');
 
       const res = await _this.utils.post({
-        url: this.STREAM_URL + '?with=followings',
+        url: this.STREAM_URL + _this.utils.qs.create(withFollowers),
         headers: {
           'Authorization': `OAuth ${OAuthData}`,
           'User-Agent': 'Tweetcord (github.com/aetheryx/tweetcord)',
@@ -68,79 +104,26 @@ async function init () {
       return res;
     }
 
-    async genericGet (endpoint, secret, qsData, params) {
-      const url = this.BASE_URL + endpoint;
-      const qs = _this.utils.qs.create(qsData);
+    // genericGet was only used for fetching timelines, which with the streaming update, isn't needed anymore
+    // async genericGet (endpoint, secret, qsData, params) {
+    //   const url = this.BASE_URL + endpoint;
+    //   const qs = _this.utils.qs.create(qsData);
   
-      const OAuthData = _this.OAuthClient.signHeaders('GET', url, params, secret).join(', ');
+    //   const OAuthData = _this.OAuthClient.signHeaders('GET', url, params, secret).join(', ');
   
-      const res = await _this.utils.get({
-        url: url + qs,
-        headers: {
-          'Authorization': `OAuth ${OAuthData}`
-        }
-      });
+    //   const res = await _this.utils.get({
+    //     url: url + qs,
+    //     headers: {
+    //       'Authorization': `OAuth ${OAuthData}`
+    //     }
+    //   });
   
-      if (res.errors || res.error) {
-        throw res;
-      }
+    //   if (res.errors || res.error) {
+    //     throw res;
+    //   }
   
-      return res;
-    }
-  
-    async getTimeline (token, secret, since_id = 1, count = 1) {
-      return this.genericGet(
-        '/statuses/home_timeline.json',
-        secret,
-        { count, since_id },
-        { oauth_token: token, count, since_id }
-      );
-    }
-  
-    async tweet (token, secret, status) {
-      return this.genericPost(
-        '/statuses/update.json',
-        secret,
-        _this.utils.qs.create({ status }),
-        { oauth_token: token, status }
-      );
-    }
-  
-    async like (token, secret, id) {
-      return this.genericPost(
-        '/favorites/create.json',
-        secret,
-        _this.utils.qs.create({ id }),
-        { oauth_token: token, id }
-      );
-    }
-  
-    async unlike (token, secret, id) {
-      return this.genericPost(
-        '/favorites/destroy.json',
-        secret,
-        _this.utils.qs.create({ id }),
-        { oauth_token: token, id }
-      );
-    }
-  
-    async retweet (token, secret, id) {
-      return this.genericPost(
-        `/statuses/retweet/${id}.json`,
-        secret,
-        _this.utils.qs.create({ id }),
-        { oauth_token: token, id }
-      );
-    }
-  
-    async unretweet (token, secret, id) {
-      return this.genericPost(
-        `/statuses/unretweet/${id}.json`,
-        secret,
-        _this.utils.qs.create({ id }),
-        { oauth_token: token, id }
-      );
-    }
+    //   return res;
+    // }
   }
 
   this.RestClient = new RestClient();

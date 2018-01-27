@@ -1,6 +1,6 @@
 const { request } = require('https');
 
-function post (options, body = '') {
+function post (options, body = '', stream) {
   return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
     try {
       const data = JSON.stringify(body);
@@ -13,11 +13,13 @@ function post (options, body = '') {
         headers: {}
       }, options);
 
-      console.log(postOptions);
 
       let output = '';
 
       const req = request(postOptions, (res) => {
+        if (stream) {
+          return;
+        }
         res.setEncoding('utf8');
         res.on('data', (chunk) => {
           output += chunk;
@@ -25,7 +27,6 @@ function post (options, body = '') {
         res.on('end', () => {
           try {
             output = JSON.parse(output);
-            console.log(output);
           } catch (_) {} // eslint-disable-line no-empty
           resolve(output);
         });
@@ -35,15 +36,9 @@ function post (options, body = '') {
         reject(err);
       });
 
-     
-      !options.url.includes('tweet') && req.on('response', (r) => {
-        let f = '';
-        r.on('data', (c) => { f += c.toString() });
-        r.on('end', () => {
-          console.log(f);
-        })
-      });
-
+      if (stream) {
+        resolve(req);
+      }
 
       req.write(data);
       req.end();

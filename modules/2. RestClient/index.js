@@ -32,10 +32,10 @@ async function init () {
     }
 
     async createTweetStream (token, secret) {
-      const OAuthData = _this.OAuthClient.signHeaders('POST', this.STREAM_URL, { oauth_token: token }, secret).join(',');
+      const OAuthData = _this.OAuthClient.signHeaders('POST', this.STREAM_URL, { oauth_token: token, with: 'followings' }, secret).join(',');
 
       const res = await _this.utils.post({
-        url: this.STREAM_URL,
+        url: this.STREAM_URL + '?with=followings',
         headers: {
           'Authorization': `OAuth ${OAuthData}`,
           'User-Agent': 'Tweetcord (github.com/aetheryx/tweetcord)',

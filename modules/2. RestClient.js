@@ -31,7 +31,7 @@ async function init () {
           }
 
           return this.genericPost(
-            routes[route],
+            url,
             secret,
             _this.utils.qs.create(params),
             Object.assign({ oauth_token: token }, params)
@@ -103,27 +103,6 @@ async function init () {
 
       return res;
     }
-
-    // genericGet was only used for fetching timelines, which with the streaming update, isn't needed anymore
-    // async genericGet (endpoint, secret, qsData, params) {
-    //   const url = this.BASE_URL + endpoint;
-    //   const qs = _this.utils.qs.create(qsData);
-  
-    //   const OAuthData = _this.OAuthClient.signHeaders('GET', url, params, secret).join(', ');
-  
-    //   const res = await _this.utils.get({
-    //     url: url + qs,
-    //     headers: {
-    //       'Authorization': `OAuth ${OAuthData}`
-    //     }
-    //   });
-  
-    //   if (res.errors || res.error) {
-    //     throw res;
-    //   }
-  
-    //   return res;
-    // }
   }
 
   this.RestClient = new RestClient();

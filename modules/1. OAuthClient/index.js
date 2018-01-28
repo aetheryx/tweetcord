@@ -12,9 +12,6 @@ class OAuthClient {
   }
 
   signHeaders (method, url, props = {}, secret = '') {
-    if (!url.includes('home_timeline')) {
-      this.mainClass.log(url);
-    }
     let headers = [];
     for (const prop in props) {
       headers.push([ prop, props[prop] ]);
@@ -50,8 +47,6 @@ class OAuthClient {
     return headers.filter(h => h.startsWith('oauth'));
   }
 }
-
-module.exports = OAuthClient;
 
 async function init () {
   this.OAuthClient = new OAuthClient(this);

@@ -1,7 +1,7 @@
-async function setupCommand (msg) { // TODO: perm check on this command
+async function setupCommand (msg) {
   if (!msg.member.permission.has('manageChannels')) {
     return 'You need the `Manage Channels` permission to set up a timeline channel.';
-  }  
+  }
   if (!msg.channelMentions[0]) {
     return 'You need to mention a channel.';
   }
@@ -21,7 +21,7 @@ async function setupCommand (msg) { // TODO: perm check on this command
       `You've already linked with <#${potentialTimeline.channelID}>.`;
   }
 
-  this.bot.sendMessage(msg.channel.id, `Are you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able to read any new tweets on your timeline.\n\nRespond with \`yes\` or \`no\`.`);
+  this.bot.sendMessage(msg.channel.id, `Are you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able to read any new tweets, likes, retweets or follows on your timeline.\n\nRespond with \`yes\` or \`no\`.`);
 
   const message = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['y', 'n', 'yes', 'no'].includes(m.content.toLowerCase()));
   if (!message) {
@@ -32,7 +32,7 @@ async function setupCommand (msg) { // TODO: perm check on this command
     return 'Cancelled.';
   } else {
     await this.db.addTimeline(msg.channelMentions[0], msg.author.id);
-    return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new tweets will now appear there.\n*Note: because of Twitter ratelimits, it can take up to 60 seconds for a new tweet to appear.*`;
+    return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new events will now appear there.`;
   }
 }
 

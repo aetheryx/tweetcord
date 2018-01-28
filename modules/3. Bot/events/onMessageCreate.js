@@ -1,7 +1,7 @@
 const { inspect } = require('util');
 
 async function onMessageCreate (msg) {
-  if (msg.author.bot || this.config.servers && !this.config.servers.includes(msg.channel.guild.id)) {
+  if (msg.author.bot) {
     return;
   }
 
@@ -33,8 +33,6 @@ async function onMessageCreate (msg) {
     if (command.ownerOnly && msg.author.id !== this.config.bot.ownerID) {
       return;
     }
-
-    this.log(`${command.name} ${args.join(' ')}`);
 
     command.command.call(this, msg, args)
       .then(res => {

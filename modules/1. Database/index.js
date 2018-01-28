@@ -10,11 +10,10 @@ async function init () {
 
   this.dbConn = this.dbClient.db('tweetcord');
 
-  this.dbTables = {
-    'prefixes': this.dbConn.collection('prefixes'),
-    'links': this.dbConn.collection('links'),
-    'timelines': this.dbConn.collection('timelines')
-  };
+  this.dbTables = {};
+  for (const table of ['prefixes', 'links', 'timelines']) {
+    this.dbTables[table] = this.dbConn.collection(table);
+  }
 
   this.db = {};
   for (const dbFunction in dbFunctions) {

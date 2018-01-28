@@ -18,13 +18,12 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   if (
     !message ||
     message.author.id !== this.bot.user.id ||
-    !message.embeds[0] || message.embeds[0].title !== 'New Tweet' ||
     !emoji.id || !['400076876430835722', '400076857493684226'].includes(emoji.id)
   ) {
     return;
   }
 
-  const [tweetID, ownerID] = message.embeds[0].description.match(/"(.*)"\)/)[1].split('|');
+  const tweetID = message.embeds[0].description.match(/"(.*)"\)/)[1];
 
   const link = await this.db.getLink(userID);
 

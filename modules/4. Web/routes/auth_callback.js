@@ -13,7 +13,8 @@ async function init () {
         id: req.session.discordID,
         OAuthAccessToken: token.oauth_token,
         OAuthAccessSecret: token.oauth_token_secret,
-        name: token.screen_name
+        name: token.screen_name,
+        twitterID: token.user_id
       });
 
       req.session.name = token.screen_name;

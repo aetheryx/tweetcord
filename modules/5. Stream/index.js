@@ -15,7 +15,7 @@ const replies = {
 };
 
 async function postMessage (res, timeline, link) {
-  if (res.delete || res.events && !events.includes(res.event)) {
+  if (res.delete || res.event && !events.includes(res.event)) {
     return;
   }
 

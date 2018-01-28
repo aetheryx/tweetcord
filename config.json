@@ -1,0 +1,14 @@
+{
+  "web": {},
+  "bot": {
+    "defaultPrefix": "",
+    "token": "",
+    "embedColor": 1952511,
+    "ownerID": ""
+  },
+  "twitter": {
+    "APIKey": "",
+    "secret": ""
+  },
+  "dev": true
+}

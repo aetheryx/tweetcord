@@ -4,7 +4,7 @@ async function cleanExit () {
   if (this.config.dev) {
     process.exit();
   }
-  this.log('Gracefully exiting...') 
+  this.log('Gracefully exiting...');
   try {
     await this.bot.disconnect({ reconnect: false });
     await this.dbClient.close();
@@ -12,7 +12,13 @@ async function cleanExit () {
     for (const job of this.jobs) {
       clearInterval(job);
     }
-  } catch (_) {} // eslint-disable-line no-empty
+    for (const endStream of this.streams) {
+      await endStream();
+    }
+  } catch (e) {
+    this.log(`Unclean exit: ${e.message}`, 'error');
+    process.exit(1);
+  }
 }
 
 async function init () {

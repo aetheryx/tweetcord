@@ -19,7 +19,6 @@
   "homepage": "https://github.com/Aetheryx/tweetcord#readme",
   "dependencies": {
     "mongodb": "^3.0.1",
-    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "eris": "^0.8.2",
     "express": "^4.16.2",

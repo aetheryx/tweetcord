@@ -1,5 +1,8 @@
-async function init () {
+async function postStats () {
   return 'soonTM';
 }
 
-module.exports = init;
+module.exports = {
+  func: postStats,
+  interval: 60e3
+}

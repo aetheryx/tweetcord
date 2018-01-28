@@ -1,7 +1,7 @@
 async function getAllTimelines () {
   return this.dbTables['timelines']
     .find({})
-    .then(r => r.toArray());
+    .toArray()
 }
 
 module.exports = getAllTimelines;

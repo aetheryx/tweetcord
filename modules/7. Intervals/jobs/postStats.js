@@ -5,4 +5,4 @@ async function postStats () {
 module.exports = {
   func: postStats,
   interval: 60e3
-}
+};

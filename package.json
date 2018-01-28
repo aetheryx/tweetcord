@@ -23,8 +23,7 @@
     "ejs": "^2.5.7",
     "eris": "^0.8.2",
     "express": "^4.16.2",
-    "express-session": "1.15.6",
-    "oauth": "^0.9.15"
+    "express-session": "1.15.6"
   },
   "devDependencies": {
     "eslint": "^4.14.0"

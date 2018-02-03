@@ -48,8 +48,9 @@ class OAuthClient {
   }
 }
 
-async function init () {
-  this.OAuthClient = new OAuthClient(this);
+module.exports = {
+  order: 1,
+  func: async function createOAuthClient () {
+    this.OAuthClient = new OAuthClient(this);
+  }
 }
-
-module.exports = init;

@@ -21,11 +21,13 @@ async function cleanExit () {
   }
 }
 
-async function init () {
-  process.on('SIGINT', cleanExit.bind(this));
-  process.on('unhandledRejection', err => {
-    this.log(`Unhandled rejection: \n${err.stack || err instanceof Object ? inspect(err) : err}`, 'error'); // eslint-disable-line no-console
-  });
+module.exports = {
+  order: 6,
+  func: async function hookEvents () {
+    this.gracefulExit = cleanExit.bind(this);
+    process.on('SIGINT', this.gracefulExit);
+    process.on('unhandledRejection', err => {
+      this.log(`Unhandled rejection: \n${err.stack || err instanceof Object ? inspect(err) : err}`, 'error'); // eslint-disable-line no-console
+    });
+  }
 }
-
-module.exports = init;

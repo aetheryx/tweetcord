@@ -2,7 +2,7 @@ const { Client } = require('eris');
 const fs = require('fs');
 const events = require(`${__dirname}/events`);
 
-function init () {
+function createBot () {
   return new Promise(resolve => {
     const mainClass = this;
 
@@ -85,4 +85,7 @@ function init () {
   });
 }
 
-module.exports = init;
+module.exports = {
+  order: 3,
+  func: createBot
+};

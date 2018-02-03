@@ -1,4 +1,4 @@
-async function init () {
+async function createRestClient () {
   const _this = this;
 
   class RestClient {
@@ -108,4 +108,7 @@ async function init () {
   this.RestClient = new RestClient();
 }
 
-module.exports = init;
+module.exports = {
+  order: 2,
+  func: createRestClient
+};

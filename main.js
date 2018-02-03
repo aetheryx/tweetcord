@@ -1,5 +1,4 @@
 const botPackage = require(`${__dirname}/package.json`);
-
 const modules = require(`${__dirname}/modules`);
 
 class Tweetcord {
@@ -14,11 +13,12 @@ class Tweetcord {
   }
 
   async importModules () {
-    for (const module in modules) {
-      await modules[module]
+    for (const module of modules.sort((a, b) => a.order - b.order)) {
+      await module
+        .func
         .call(this)
         .catch(e => {
-          console.error(`Failed loading module ${module}: ${e.stack}`); // eslint-disable-line no-console
+          console.error(`Failed loading module ${module.func.name}: ${e.stack || e}`); // eslint-disable-line no-console
           process.exit(1);
         });
     }

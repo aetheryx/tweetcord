@@ -1,11 +1,10 @@
 const express = require('express');
 const app = express();
-const cookies = require('cookie-parser');
 const session = require('express-session');
 
 const routes = require(`${__dirname}/routes`);
 
-async function init () {
+async function createWeb () {
   this.app = app;
 
   this.server = app.listen(this.config.web.port || 42069, this.log.bind(null, 'Express server ready'));
@@ -25,4 +24,7 @@ async function init () {
   this.app = app;
 }
 
-module.exports = init;
+module.exports = {
+  order: 4,
+  func: createWeb
+};

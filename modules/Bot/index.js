@@ -3,25 +3,25 @@ const fs = require('fs');
 const events = require(`${__dirname}/events`);
 
 function createBot () {
+  const _this = this;
   return new Promise(resolve => {
-    const mainClass = this;
 
     class Bot extends Client {
       constructor (props) {
-        super(mainClass.config.bot.token, props);
+        super(_this.config.bot.token, props);
         this.connect();
 
         this.commands = {};
         this.loadCommands();
 
-        this.MessageCollector = new mainClass.utils.MessageCollector(this);
+        this.MessageCollector = new _this.utils.MessageCollector(this);
 
         this
           .once('ready', resolve)
-          .on('ready', events.onReady.bind(mainClass))
-          .on('messageCreate', events.onMessageCreate.bind(mainClass))
-          .on('messageReactionAdd', events.onMessageReaction.add.bind(mainClass))
-          .on('messageReactionRemove', events.onMessageReaction.remove.bind(mainClass));
+          .on('ready', events.onReady.bind(_this))
+          .on('messageCreate', events.onMessageCreate.bind(_this))
+          .on('messageReactionAdd', events.onMessageReaction.add.bind(_this))
+          .on('messageReactionRemove', events.onMessageReaction.remove.bind(_this));
       }
 
       async loadCommands () {
@@ -42,11 +42,11 @@ function createBot () {
               }, command);
             } catch (err) {
               failed++;
-              mainClass.log(`Failed to load command ${file}: \n${err.stack}`, 'error');
+              _this.log(`Failed to load command ${file}: \n${err.stack}`, 'error');
             }
           });
 
-          mainClass.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
+          _this.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
         });
 
       }
@@ -57,7 +57,7 @@ function createBot () {
         }
 
         if (content.embed && !content.embed.color) {
-          content.embed.color = mainClass.config.bot.embedColor;
+          content.embed.color = _this.config.bot.embedColor;
         }
 
         try {
@@ -73,7 +73,7 @@ function createBot () {
             !err.message.includes('Cannot send messages to this user') &&
             !err.message.includes('Missing Access')
           ) {
-            mainClass.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
+            _this.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
           } else {
             return false;
           }

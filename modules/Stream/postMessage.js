@@ -17,13 +17,15 @@ const replies = {
 };
 
 async function postMessage (res, timeline, link) {
-  if (res.delete || res.event && !events.includes(res.event)) { // TODO: Parse delete events properly
+  if (
+    res.delete || // TODO: Parse delete events
+    res.direct_message || // TODO: Parse DMs
+    res.event && !events.includes(res.event)
+  ) {
     return;
   }
 
   let event;
-
-  
 
   if (res.event in replies) {
     event = Object.keys(replies).find(g => g === res.event);
@@ -60,6 +62,8 @@ async function postMessage (res, timeline, link) {
   }
 
   const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
+
+  console.log(resource)
 
   const msg = await this.bot.sendMessage(timeline.channelID, {
     title: `@${author.screen_name} ${replyString}`,

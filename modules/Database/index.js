@@ -3,7 +3,7 @@ const dbFunctions = require(`${__dirname}/dbFunctions`);
 
 module.exports = {
   order: 1,
-  func: async function database () {
+  func: async function createDatabase () {
     this.dbClient = await MongoClient.connect(this.config.dbURL || 'mongodb://localhost:27017')
       .catch(e => {
         this.log(`Failed to connect to MongoDB: ${e.message}\nExiting...`, 'error');

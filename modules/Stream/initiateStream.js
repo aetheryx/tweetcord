@@ -21,7 +21,11 @@ async function initiateStream (timeline) {
 
     r.on('data', (data) => {
       data = data.toString();
-      if (data === '\r\n' || data.startsWith('{"friends')) { // Ignore keep-alives (and friend info)
+      if (
+        data === '\r\n' || // Ignore keep-alives
+        data.startsWith('{"friends') ||
+        data === 'Exceeded connection limit for user\r\n'
+      ) {
         return;
       }
       const parsed = parse(data);

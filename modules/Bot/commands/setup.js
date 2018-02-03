@@ -19,7 +19,7 @@ async function setupCommand (msg) {
   if (potentialTimeline) {
     const channel = potentialTimeline.channelID === msg.channelMentions[0];
     return channel ?
-      `The channel <#${msg.channelMentions}> has already been linked with ${msg.author.id === potentialTimeline.userID ? 'you' : await this.RestClient.getTagByID(potentialTimeline.userID)}.` :
+      `The channel <#${msg.channelMentions}> has already been linked with ${link.twitterID === potentialTimeline.twitterID ? 'your twitter account' : await this.RestClient.getTagByID(potentialTimeline.userID)}.` :
       `You've already linked with <#${potentialTimeline.channelID}>.`;
   }
 
@@ -33,8 +33,12 @@ async function setupCommand (msg) {
   if (['n', 'no'].includes(message.content.toLowerCase())) {
     return 'Cancelled.';
   } else {
-    await this.db.addTimeline(msg.channelMentions[0], msg.author.id);
-    await initiateStream.call(this, this.db.getTimeline(msg.author.id));
+    await this.db.addTimeline({
+      channelID: msg.channelMentions[0],
+      userID: msg.author.id,
+      twitterID: link.twitterID
+    });
+    await initiateStream.call(this, await this.db.getTimeline(null, msg.author.id));
     return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new events will now appear there.`;
   }
 }

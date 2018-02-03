@@ -1,8 +1,5 @@
-async function addTimeline (channelID, userID) {
-  return this.dbTables['timelines'].insert({
-    userID,
-    channelID
-  });
+async function addTimeline (options) {
+  return this.dbTables['timelines'].insert(options);
 }
 
 module.exports = addTimeline;

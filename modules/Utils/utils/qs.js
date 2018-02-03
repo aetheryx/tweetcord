@@ -16,8 +16,7 @@ function parse (querystring) {
 
   querystring = querystring
     .split('&')
-    .map(pair => pair.split('=')
-      .map(decodeURIComponent));
+    .map(pair => pair.split('=').map(decodeURIComponent));
 
   for (const pair of querystring) {
     output[pair[0]] = pair[1];

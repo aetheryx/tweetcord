@@ -1,3 +1,5 @@
+const initiateStream = require(`${__dirname}/../../Stream/initiateStream`);
+
 async function setupCommand (msg) {
   if (!msg.member.permission.has('manageChannels')) {
     return 'You need the `Manage Channels` permission to set up a timeline channel.';
@@ -32,6 +34,7 @@ async function setupCommand (msg) {
     return 'Cancelled.';
   } else {
     await this.db.addTimeline(msg.channelMentions[0], msg.author.id);
+    await initiateStream.call(this, this.db.getTimeline(msg.author.id));
     return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new events will now appear there.`;
   }
 }

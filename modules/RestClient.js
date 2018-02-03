@@ -3,8 +3,8 @@ async function createRestClient () {
 
   class RestClient {
     constructor () {
-      this.OAuthKey = _this.config.twitter.APIKey;
-      this.OAuthSecret = _this.config.twitter.secret;
+      this.consumerKey = _this.config.twitter.APIKey;
+      this.consumerSecret = _this.config.twitter.secret;
 
       this.BASE_URL = 'api.twitter.com/1.1/';
       this.STREAM_URL = 'userstream.twitter.com/1.1/user.json';
@@ -14,15 +14,15 @@ async function createRestClient () {
 
     buildRoutes () {
       const routes = {
-        'tweet': 'statuses/update.json',
-        'like': 'favorites/create.json',
-        'unlike': 'favorites/destroy.json',
-        'retweet': 'statuses/retweet/:id.json',
-        'unretweet': 'statuses/unretweet/:id.json'
+        'tweet'     : 'statuses/update.json',
+        'like'      : 'favorites/create.json',
+        'unlike'    : 'favorites/destroy.json',
+        'retweet'   : 'statuses/retweet/:id.json',
+        'unretweet' : 'statuses/unretweet/:id.json'
       };
 
       for (const route in routes) {
-        this[route] = async (token, secret, params) => {
+        this[route] = async ({ oauth_token, oauth_secret }, params) => {
           let url = routes[route];
           for (const param in params) {
             if (url.includes(`:${param}`)) {
@@ -32,9 +32,9 @@ async function createRestClient () {
 
           return this.genericPost(
             url,
-            secret,
+            oauth_secret,
             _this.utils.qs.create(params),
-            Object.assign({ oauth_token: token }, params)
+            Object.assign({ oauth_token }, params)
           );
         };
       }
@@ -59,15 +59,15 @@ async function createRestClient () {
       }
     }
 
-    async createTweetStream (token, secret, withFollowers) {
+    async createTweetStream ({ oauth_token, oauth_secret }, withFollowers) {
       withFollowers = withFollowers
         ? { with: 'followings' }
         : { with: 'user' };
       const OAuthData = _this.OAuthClient.signHeaders(
         'POST',
         this.STREAM_URL,
-        Object.assign(withFollowers, { oauth_token: token }),
-        secret
+        Object.assign(withFollowers, { oauth_token }),
+        oauth_secret
       ).join(',');
 
       const res = await _this.utils.post({

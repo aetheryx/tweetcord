@@ -3,14 +3,10 @@ const postMessage = require(`${__dirname}/postMessage.js`);
 async function initiateStream (timeline) {
   const link = await this.db.getLink(timeline.userID);
   if (!link) {
-    return; // TODO: remove link
+    return; // TODO: remove timeline
   }
 
-  const stream = await this.RestClient.createTweetStream(
-    link.OAuthAccessToken,
-    link.OAuthAccessSecret,
-    true
-  );
+  const stream = await this.RestClient.createTweetStream(link, true);
 
   stream.on('response', (r) => {
     let currentMessage = '';
@@ -25,7 +21,7 @@ async function initiateStream (timeline) {
 
     r.on('data', (data) => {
       data = data.toString();
-      if (data === '\r\n' || data.startsWith('{"friends')) { // Ignore keep-alives.
+      if (data === '\r\n' || data.startsWith('{"friends')) { // Ignore keep-alives (and friend info)
         return;
       }
       const parsed = parse(data);
@@ -33,7 +29,7 @@ async function initiateStream (timeline) {
         return postMessage.call(this, parsed, timeline, link);
       }
     });
-    this.streams.push(() => { r.destroy(); stream.destroy(); });
+    this.streams.push(async () => { r.destroy(); stream.destroy(); });
   });
 }
 

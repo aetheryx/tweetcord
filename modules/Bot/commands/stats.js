@@ -28,8 +28,8 @@ async function statsCommand (msg) {
       { name: 'Links', value: [
         `[Bot invite](https://discordapp.com/oauth2/authorize?permissions=27648&scope=bot&client_id=${this.bot.user.id})`,
         '[Support server invite](https://discord.gg/Yphr6WG)',
-        '[GitHub](https://github.com/Aetheryx/tweetcord)',
-        '[Website](https://tweetcord.xyz)'
+        '[GitHub](https://github.com/aetheryx/tweetcord)',
+        '[Website](http://tweetcord.xyz)'
       ].join(' | ') },
     ],
     footer: { text: 'Created by Aetheryx#2222' }

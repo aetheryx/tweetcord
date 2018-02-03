@@ -32,7 +32,7 @@ function createBot () {
 
           let failed = 0;
 
-          files.forEach(file => {
+          for (const file of files) {
             try {
               const command = require(`${__dirname}/commands/${file}`);
               this.commands[command.name] = Object.assign({
@@ -44,7 +44,7 @@ function createBot () {
               failed++;
               _this.log(`Failed to load command ${file}: \n${err.stack}`, 'error');
             }
-          });
+          }
 
           _this.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
         });

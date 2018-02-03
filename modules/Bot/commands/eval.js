@@ -12,11 +12,11 @@ async function evalCommand (msg, args) {
   try {
     result = await (asynchr ? eval(`(async()=>{${input}})();`) : eval(input));
     if (typeof result !== 'string') {
-      result = inspect(result, { depth: 1 }).length > 1990 ?
-        inspect(result, { depth: 0 }) :
-        inspect(result, { depth: 1 });
+      result = inspect(result, {
+        depth: !(inspect(result, { depth: 1 }).length > 1990)
+      });
     }
-    result = result.replace(new RegExp(`${this.config.bot.token}|${this.config.twitter.APIKey}|${this.config.twitter.secret}`, 'gi'), 'i think the fuck not you trick ass bitch');
+    result = result.replace(new RegExp(`${this.config.bot.token}|${this.config.twitter.secret}`, 'gi'), 'i think the fuck not you trick ass bitch');
   } catch (err) {
     result = err.message;
   }

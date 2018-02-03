@@ -10,4 +10,4 @@ module.exports = {
       initiateStream.call(this, timeline);
     }
   }
-}
+};

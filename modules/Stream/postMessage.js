@@ -23,9 +23,11 @@ async function postMessage (res, timeline, link) {
 
   let event;
 
+  
+
   if (res.event in replies) {
     event = Object.keys(replies).find(g => g === res.event);
-  } else if (res.retweeted_status) { //  && res.retweeted_status.user.id_str === link.twitterID
+  } else if (res.retweeted_status) {
     event = 'retweet';
   } else if (res.is_quote_status || res.target_object && res.target_object.is_quote_status) {
     if (res.event !== 'quoted_tweet' && res.quoted_status.user.id_str === link.twitterID) {
@@ -57,15 +59,20 @@ async function postMessage (res, timeline, link) {
     replyString = replyString.replace('your', `@${target.screen_name}'s`);
   }
 
+  const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
+
   const msg = await this.bot.sendMessage(timeline.channelID, {
     title: `@${author.screen_name} ${replyString}`,
-    url: `https://twitter.com/${author.screen_name}/${isTweet ? `/status/${resource.id_str}` : ''}`,
+    url: `https://twitter.com/${author.screen_name}${isTweet ? `/status/${resource.id_str}` : ''}`,
     author: {
       name: `@${author.screen_name}`,
       url: `https://twitter.com/${author.screen_name}`,
       icon_url: author.profile_image_url
     },
-    description: resource.text,
+    image: {
+      url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
+    },
+    description: (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) + metadata,
     timestamp: new Date(res.created_at)
   });
 
@@ -74,12 +81,8 @@ async function postMessage (res, timeline, link) {
     msg.addReaction('twitterRetweet:400076876430835722');
 
     cooldowns.add(author.id_str);
-    setTimeout(() => cooldowns.delete(author.id_str), 30e3);
+    setTimeout(() => cooldowns.delete(author.id_str), 15e3);
   }
 }
 
-
-
 module.exports = postMessage;
-
-// ${isTweet ? resource.extended_tweet ? tweet.extended_tweet.full_text : tweet.text : ''}${react ? ` [\u200b]( "${tweet.id_str}")` : ''}

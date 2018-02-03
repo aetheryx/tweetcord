@@ -4,9 +4,9 @@ async function tweetCommand (msg, args) {
     return 'Missing required arguments.';
   }
 
-  const linkInfo = await this.db.getLink(msg.author.id);
+  const link = await this.db.getLink(msg.author.id);
 
-  if (!linkInfo) {
+  if (!link) {
     return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
   }
 
@@ -14,11 +14,7 @@ async function tweetCommand (msg, args) {
     return `Your tweet is too big! You're ${args.length - 280} characters over the limit.`;
   }
 
-  const res = await this.RestClient.tweet(
-    linkInfo.OAuthAccessToken,
-    linkInfo.OAuthAccessSecret,
-    { status: args }
-  ).catch(e => {
+  const res = await this.RestClient.tweet(link, { status: args }).catch(e => {
     if (e.errors && e.errors.find(e => e.code === 187)) {
       this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
     }

@@ -1,5 +1,5 @@
-async function getLink (id) {
-  return this.dbTables['links'].findOne({ id });
+async function getLink (discordID) {
+  return this.dbTables['links'].findOne({ discordID });
 }
 
 module.exports = getLink;

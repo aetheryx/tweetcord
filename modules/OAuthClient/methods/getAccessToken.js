@@ -1,12 +1,12 @@
 const url = 'api.twitter.com/oauth/access_token';
 
-async function getAccessToken (token, secret, verifier) {
+async function getAccessToken (oauth_token, oauth_secret, verifier) {
   const OAuthData = this.OAuthClient.signHeaders(
     'POST',
     url, {
-      oauth_token: token,
+      oauth_token,
       oauth_verifier: verifier
-    }, secret).join(', ');
+    }, oauth_secret).join(', ');
 
   const res = await this.utils.post({
     url,

@@ -13,7 +13,6 @@ function post (options, body = '', stream) {
         headers: {}
       }, options);
 
-
       let output = '';
 
       const req = request(postOptions, (res) => {

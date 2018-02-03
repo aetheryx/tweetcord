@@ -1,5 +1,5 @@
 async function deleteTimeline (id) {
-  return this.dbTables['timelines'].remove({ id }, true);
+  return this.dbTables['timelines'].remove({ id });
 }
 
 module.exports = deleteTimeline;

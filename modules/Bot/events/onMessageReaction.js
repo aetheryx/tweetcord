@@ -18,6 +18,7 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   if (
     !message ||
     message.author.id !== this.bot.user.id ||
+    (this.bot.users.get(userID) || { bot: true }).bot ||
     !emoji.id || !['400076876430835722', '400076857493684226'].includes(emoji.id)
   ) {
     return;

@@ -18,7 +18,10 @@ async function createRestClient () {
         'like'      : 'favorites/create.json',
         'unlike'    : 'favorites/destroy.json',
         'retweet'   : 'statuses/retweet/:id.json',
-        'unretweet' : 'statuses/unretweet/:id.json'
+        'unretweet' : 'statuses/unretweet/:id.json',
+
+        'follow'    : 'friendships/create.json',
+        'unfollow'  : 'friendships/destroy.json'
       };
 
       for (const route in routes) {

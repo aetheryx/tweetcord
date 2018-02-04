@@ -9,7 +9,7 @@ async function execCommand (msg, args) {
     if (!stderr && !stdout) {
       msg.react('\u2611');
     } else {
-      return `${stdout ? `Info: \`\`\`\n${stdout}\n\`\`\`` : ''}\n${stderr ? `Errors: \`\`\`\n${stderr}\`\`\`` : ''}`;
+      this.bot.sendMessage(msg.channel.id, `${stdout ? `Info: \`\`\`\n${stdout}\n\`\`\`` : ''}\n${stderr ? `Errors: \`\`\`\n${stderr}\`\`\`` : ''}`);
     }
   });
 }

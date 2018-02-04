@@ -9,7 +9,7 @@ const events = [
 const replies = {
 // Event type   Human-readable reply      Author    Source             Target    Tweet?  Whether to ignore when not directed at the user
   'quote':    [ 'quoted your tweet:',    'user',   'quoted_status',    'user',   true,   false ],
-  'favorite': [ 'liked your tweet:',     'source', 'target_object',    'user',   true,   true  ],
+  'favorite': [ 'liked your tweet:',     'source', 'target_object',    'user',   false,  true  ],
   'retweet':  [ 'retweeted your tweet:', 'user',   'retweeted_status', 'user',   true,   false ],
   'mention':  [ 'mentioned you:',        'user',    null,              null,     true,   false ],
   'tweet':    [ 'tweeted:',              'user',    null,              null,     true,   false ],
@@ -62,8 +62,6 @@ async function postMessage (res, timeline, link) {
   }
 
   const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
-
-  console.log(resource)
 
   const msg = await this.bot.sendMessage(timeline.channelID, {
     title: `@${author.screen_name} ${replyString}`,

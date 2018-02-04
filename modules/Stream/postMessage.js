@@ -82,7 +82,9 @@ async function postMessage (res, timeline, link) {
 
   if (msg && isTweet) {
     await msg.addReaction('twitterLike:400076857493684226');
-    msg.addReaction('twitterRetweet:400076876430835722');
+    if (event !== 'retweet') {
+      msg.addReaction('twitterRetweet:400076876430835722');
+    }
 
     cooldowns.add(author.id_str);
     setTimeout(() => cooldowns.delete(author.id_str), 15e3);

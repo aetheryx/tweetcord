@@ -74,9 +74,10 @@ async function postMessage (res, timeline, link) {
     image: {
       url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
     },
-    description: (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) + metadata,
+    description: ((resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || '') + metadata,
     timestamp: new Date(res.created_at)
   });
+
 
   if (msg && isTweet) {
     await msg.addReaction('twitterLike:400076857493684226');

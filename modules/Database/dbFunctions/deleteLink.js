@@ -1,5 +1,5 @@
-async function deleteLink (id) {
-  return this.dbTables['links'].remove({ id });
+async function deleteLink (discordID) {
+  return this.dbTables['links'].remove({ discordID });
 }
 
 module.exports = deleteLink;

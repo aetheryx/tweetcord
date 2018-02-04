@@ -18,13 +18,14 @@
   },
   "homepage": "https://github.com/Aetheryx/tweetcord#readme",
   "dependencies": {
-    "mongodb": "^3.0.1",
     "ejs": "^2.5.7",
     "eris": "^0.8.2",
     "express": "^4.16.2",
-    "express-session": "1.15.6"
+    "express-session": "1.15.6",
+    "mongodb": "^3.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.1",
     "eslint": "^4.14.0"
   }
 }

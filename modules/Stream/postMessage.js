@@ -81,7 +81,7 @@ async function postMessage (res, timeline, link) {
 
   if (msg && isTweet) {
     await msg.addReaction('twitterLike:400076857493684226');
-    if (event !== 'retweet') {
+    if (!['retweet', 'quote'].includes(event)) {
       msg.addReaction('twitterRetweet:400076876430835722');
     }
 

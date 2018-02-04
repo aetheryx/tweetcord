@@ -12,8 +12,8 @@ async function cleanExit () {
     for (const job of this.jobs) {
       clearInterval(job);
     }
-    for await (const endStream of this.streams) {
-      endStream();
+    for (const endStream of this.streams) {
+      await endStream();
     }
   } catch (e) {
     this.log(`Unclean exit: ${e.message}`, 'error');

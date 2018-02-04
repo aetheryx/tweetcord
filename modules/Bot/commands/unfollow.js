@@ -1,7 +1,7 @@
 async function unfollowCommand (msg, args) {
   args = args.join(' ');
   if (!args) {
-    return 'Missing required arguments.';
+    return 'Missing required arguments. Who do you want to unfollow?';
   }
   if (args.includes(' ')) {
     return 'Twitter user handles can\'t include a space.';

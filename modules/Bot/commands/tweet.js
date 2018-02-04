@@ -17,6 +17,8 @@ async function tweetCommand (msg, args) {
   const res = await this.RestClient.tweet(link, { status: args }).catch(e => {
     if (e.errors && e.errors.find(e => e.code === 187)) {
       this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
+    } else {
+      throw e;
     }
   });
 

@@ -1,6 +1,6 @@
 async function rebootCommand (msg) {
   await this.bot.sendMessage(msg.channel.id, 'Restarting...');
-  // TODO: call sigint handler's reboot
+  this.gracefulExit();
 }
 
 module.exports = {

@@ -14,29 +14,32 @@ async function createRestClient () {
 
     buildRoutes () {
       const routes = {
-        'tweet'     : 'statuses/update.json',
-        'like'      : 'favorites/create.json',
-        'unlike'    : 'favorites/destroy.json',
-        'retweet'   : 'statuses/retweet/:id.json',
-        'unretweet' : 'statuses/unretweet/:id.json',
+        'tweet'     : { type: 'post', endpoint: 'statuses/update.json'        },
+        'like'      : { type: 'post', endpoint: 'favorites/create.json'       },
+        'unlike'    : { type: 'post', endpoint: 'favorites/destroy.json'      },
+        'retweet'   : { type: 'post', endpoint: 'statuses/retweet/:id.json'   },
+        'unretweet' : { type: 'post', endpoint: 'statuses/unretweet/:id.json' },
 
-        'follow'    : 'friendships/create.json',
-        'unfollow'  : 'friendships/destroy.json'
+        'follow'    : { type: 'post', endpoint: 'friendships/create.json'     },
+        'unfollow'  : { type: 'post', endpoint: 'friendships/destroy.json'    },
+
+        'friends'   : { type: 'get',  endpoint: 'friends/list.json'           }
       };
 
       for (const route in routes) {
         this[route] = async ({ oauth_token, oauth_secret }, params) => {
-          let url = routes[route];
+          const info = routes[route];
           for (const param in params) {
-            if (url.includes(`:${param}`)) {
-              url = url.replace(`:${param}`, params[param]);
+            if (info.endpoint.includes(`:${param}`)) {
+              info.endpoint = info.endpoint.replace(`:${param}`, params[param]);
             }
           }
 
-          return this.genericPost(
-            url,
+          return this.genericRequest(
+            info.type,
+            info.endpoint,
             oauth_secret,
-            _this.utils.qs.create(params),
+            params,
             Object.assign({ oauth_token }, params)
           );
         };
@@ -89,11 +92,12 @@ async function createRestClient () {
       return res;
     }
 
-    async genericPost (endpoint, secret, qs = '', params = {}) {
+    async genericRequest (method, endpoint, secret, qsData = {}, params = {}) {
       const url = this.BASE_URL + endpoint;
-      const OAuthData = _this.OAuthClient.signHeaders('POST', url, params, secret).join(',');
+      const qs = _this.utils.qs.create(qsData);
+      const OAuthData = _this.OAuthClient.signHeaders(method.toUpperCase(), url, params, secret).join(',');
 
-      const res = await _this.utils.post({
+      const res = await _this.utils[method]({
         url: url + qs,
         headers: {
           'Authorization': `OAuth ${OAuthData}`

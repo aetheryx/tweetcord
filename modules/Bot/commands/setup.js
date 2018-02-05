@@ -28,7 +28,6 @@ async function setupCommand (msg) {
     }
   }
 
-
   const link = await this.db.getLink(msg.author.id);
   if (!link) {
     return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
@@ -58,7 +57,7 @@ async function setupCommand (msg) {
       userID: msg.author.id,
       twitterID: link.twitterID
     });
-    await initiateStream.call(this, await this.db.getTimeline(null, msg.author.id));
+    await initiateStream.call(this, await this.db.getTimeline(msg.author.id));
     return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new events will now appear there.`;
   }
 }

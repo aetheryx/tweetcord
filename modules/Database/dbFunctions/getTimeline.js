@@ -1,8 +1,8 @@
-async function getTimeline (channelID, userID) {
+async function getTimeline (id) {
   return this.dbTables['timelines'].findOne({
     $or: [
-      { userID },
-      { channelID }
+      { userID: id },
+      { channelID: id }
     ]
   });
 }

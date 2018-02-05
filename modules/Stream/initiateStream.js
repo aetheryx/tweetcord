@@ -33,7 +33,7 @@ async function initiateStream (timeline) {
         return postMessage.call(this, parsed, timeline, link);
       }
     });
-    this.streams.push(async () => { r.destroy(); stream.destroy(); });
+    this.streams[link.twitterID] = async () => { r.destroy(); stream.destroy(); };
   });
 }
 

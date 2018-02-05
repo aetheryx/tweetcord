@@ -33,12 +33,11 @@ async function setupCommand (msg) {
     return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
   }
 
-  const potentialTimeline = await this.db.getTimeline(msg.channelMentions[0], msg.author.id);
-
+  const potentialTimelines = await Promise.all([msg.channelMentions[0], msg.author.id].map(this.db.getTimeline));
+  const potentialTimeline = potentialTimelines[0] || potentialTimelines[1];
   if (potentialTimeline) {
-    const channel = potentialTimeline.channelID === msg.channelMentions[0];
-    return channel ?
-      `The channel <#${msg.channelMentions}> has already been linked with ${link.twitterID === potentialTimeline.twitterID ? 'your twitter account' : await this.RestClient.getTagByID(potentialTimeline.userID)}.` :
+    return potentialTimeline.channelID === msg.channelMentions[0] ?
+      `The channel <#${msg.channelMentions[0]}> has already been linked with ${link.twitterID === potentialTimeline.twitterID ? 'your twitter account' : await this.RestClient.getTagByID(potentialTimeline.userID)}.` :
       `You've already linked with <#${potentialTimeline.channelID}>.`;
   }
 

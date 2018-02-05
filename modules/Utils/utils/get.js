@@ -5,6 +5,7 @@ function get (options) {
     const url = options.url.split('/');
     options = Object.assign({
       hostname: url.shift(),
+      headers: Object.assign({ 'User-Agent': 'Tweetcord (https://github.com/aetheryx/tweetcord)' }, options.headers),
       path: `/${url.join('/')}`
     }, options);
 

@@ -4,6 +4,10 @@ async function unlinkCommand (msg) {
     return `How do you want to unlink if you aren't linked yet?\n\nLink your Twitter account here: ${this.config.web.domain}/link?id=${msg.author.id}`;
   }
 
+  if (this.streams[link.twitterID]) {
+    await this.streams[link.twitterID]();
+  }
+  await this.db.deleteTimeline(msg.author.id);
   await this.db.deleteLink(msg.author.id);
   return 'Your link was successfully removed from our database. Don\'t forget to revoke access here: https://twitter.com/settings/applications';
 }

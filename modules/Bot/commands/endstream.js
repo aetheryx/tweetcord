@@ -5,8 +5,9 @@ async function endstreamCommand (msg) {
   }
 
   const link = await this.db.getLink(msg.author.id);
-
-  await this.streams[link.twitterID]();
+  if (this.streams[link.twitterID]) {
+    await this.streams[link.twitterID]();
+  }
   await this.db.deleteTimeline(msg.author.id);
   return `The tweet stream in <#${timeline.channelID}> is successfully deleted.`;
 }

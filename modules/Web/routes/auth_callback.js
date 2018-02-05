@@ -20,7 +20,7 @@ async function init () {
       });
 
       req.session.name = token.screen_name;
-      res.rsedirect('/auth/finish');
+      res.redirect('/auth/finish');
     }
   });
 }

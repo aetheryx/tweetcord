@@ -26,7 +26,7 @@ async function tweetCommand (msg, args) {
     return {
       title: 'Tweet successfully sent',
       url: `https://twitter.com/${res.user.screen_name}/status/${res.id_str}`,
-      description: res.text,
+      description: this.utils.parseEntities(res.text),
       timestamp: new Date()
     };
   }

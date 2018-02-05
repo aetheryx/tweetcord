@@ -42,11 +42,11 @@ async function setupCommand (msg) {
   }
 
   this.bot.sendMessage(msg.channel.id, 'Would you like the stream to be a *user stream* or a *follower stream*?\n\nA follower stream is the kind of stream that will show all of the tweets you can see on your timeline - this means any tweets you send and any tweets sent by people you follow.\nA user stream is the kind of stream that *only streams your own tweets*. The stream will not display tweets from anyone but your account.\n\nReply with your answer.');
-  const type = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['user', 'follow'].some(type => m.content.toLowerCase().startsWith(type)));
+  const type = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['user', 'follow'].some(type => m.content.toLowerCase().includes(type)));
   if (!type) {
     return 'Prompt timed out.';
   }
-  const isUserStream = type.content.toLowerCase().startsWith('user');
+  const isUserStream = type.content.toLowerCase().includes('user');
 
   this.bot.sendMessage(msg.channel.id, `Are you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able to read any new tweets, likes, retweets or follows on your timeline.\n\nRespond with \`yes\` or \`no\`.`);
 

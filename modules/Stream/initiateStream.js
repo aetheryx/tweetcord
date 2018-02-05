@@ -6,7 +6,7 @@ async function initiateStream (timeline) {
     return; // TODO: remove timeline
   }
 
-  const stream = await this.RestClient.createTweetStream(link, true);
+  const stream = await this.RestClient.createTweetStream(link, !timeline.isUserStream);
 
   stream.on('response', (r) => {
     let currentMessage = '';

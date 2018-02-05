@@ -1,15 +1,35 @@
 const initiateStream = require(`${__dirname}/../../Stream/initiateStream`);
 
+const requiredPermissions = [
+  'addReactions',
+  'readMessages',
+  'sendMessages',
+  'manageMessages',
+  'embedLinks',
+  'readMessageHistory',
+  'externalEmojis'
+];
+
 async function setupCommand (msg) {
-  if (!msg.member.permission.has('manageChannels')) {
-    return 'You need the `Manage Channels` permission to set up a timeline channel.';
-  }
   if (!msg.channelMentions[0]) {
     return 'You need to mention a channel.';
   }
 
-  const link = await this.db.getLink(msg.author.id);
+  if (!msg.member.permission.has('manageChannels')) {
+    return 'You need the `Manage Channels` permission to set up a timeline channel.';
+  }
 
+  const perms = msg.channel.guild.channels
+    .get(msg.channelMentions[0])
+    .permissionsOf(this.bot.user.id);
+  for (const perm of requiredPermissions) {
+    if (!perms.has(perm)) {
+      return `This channel doesn't have the \`${perm}\` permission for me. I need it to work.`;
+    }
+  }
+
+
+  const link = await this.db.getLink(msg.author.id);
   if (!link) {
     return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
   }

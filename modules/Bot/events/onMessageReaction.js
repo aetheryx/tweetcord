@@ -13,7 +13,16 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   message = await this.bot
     .guilds.get(message.channel.guild.id)
     .channels.get(message.channel.id)
-    .getMessage(message.id);
+    .getMessage(message.id)
+    .catch(e => {
+      if (e.message.includes('50001')) {
+        this.bot.sendMessage(message.channel.id, {
+          color: 0xFF0000,
+          title: '⚠',
+          description: 'I seem to be missing the `Read Message History` permission for this channel. I need this permission to work!'
+        });
+      }
+    });
 
   if (
     !message ||

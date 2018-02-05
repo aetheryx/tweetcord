@@ -8,7 +8,9 @@ async function init () {
       return res.status(500).send(`Error getting OAuth access token: ${err.message || err}`);
     });
 
-    if (token) {
+    if (await this.db.getLink(req.session.discordID)) {
+      res.status(409).send('This Discord account is already linked. Please run <code>t/unlink</code> to unlink the account first.');
+    } else if (token) {
       await this.db.addLink({
         oauth_token: token.oauth_token,
         oauth_secret: token.oauth_token_secret,
@@ -18,7 +20,7 @@ async function init () {
       });
 
       req.session.name = token.screen_name;
-      res.redirect('/auth/finish');
+      res.rsedirect('/auth/finish');
     }
   });
 }

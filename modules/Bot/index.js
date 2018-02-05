@@ -81,7 +81,25 @@ function createBot () {
       }
     }
 
-    this.bot = new Bot();
+    this.bot = new Bot({
+      disableEveryone: true,
+      maxShards: 'auto',
+      messageLimit: 0,
+      disableEvents: {
+        CHANNEL_PINS_UPDATE: true,
+        USER_SETTINGS_UPDATE: true,
+        USER_NOTE_UPDATE: true,
+        RELATIONSHIP_ADD: true,
+        RELATIONSHIP_REMOVE: true,
+        GUILD_BAN_ADD: true,
+        GUILD_BAN_REMOVE: true,
+        TYPING_START: true,
+        MESSAGE_UPDATE: true,
+        MESSAGE_DELETE: true,
+        MESSAGE_DELETE_BULK: true,
+        VOICE_STATE_UPDATE: true
+      }
+    });
   });
 }
 

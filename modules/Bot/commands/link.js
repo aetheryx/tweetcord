@@ -1,6 +1,5 @@
 async function linkCommand (msg) {
   const potentialLink = await this.db.getLink(msg.author.id);
-
   if (potentialLink) {
     return `You've already been linked with the twitter account \`@${potentialLink.name}\`.`;
   }

@@ -53,7 +53,11 @@ async function postMessage (res, timeline, link) {
   const target = source && source[info[3]] || res[info[3]] || author;
   const isTweet = info[4];
 
-  if (info[5] && target.id_str !== link.twitterID || cooldowns.has(res.source.id_str)) {
+  if (
+    info[5] && target.id_str !== link.twitterID ||
+    cooldowns.has(res.source.id_str) ||
+    timeline.isUserStream && author.id_str !== timeline.twitterID
+  ) {
     return;
   }
 

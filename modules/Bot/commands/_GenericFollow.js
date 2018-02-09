@@ -9,12 +9,19 @@ module.exports = (action) => GenericCommand({
   requiresTimeline: false,
   requiredArgs: `Missing required arguments. Who do you want to ${action}?`,
   commandFn: async function genericFollowCommand (msg, args, link) {
-    if (args[1]) {
-      return 'Twitter user handles can\'t include a space.';
-    }
-    args = args.join(' ');
-    if (args.startsWith('@')) {
-      args = args.slice(1);
+    if (msg.mentions[0]) {
+      const targetLink = await this.db.getLink(msg.mentions[0].id);
+      if (targetLink) {
+        args = targetLink.name;
+      }
+    } else {
+      if (args[1]) {
+        return 'Twitter user handles can\'t include a space.';
+      }
+      args = args.join(' ');
+      if (args.startsWith('@')) {
+        args = args.slice(1);
+      }
     }
 
     const followers = await this.RestClient.friends(link).then(res => res.users.map(u => u.screen_name.toLowerCase()));

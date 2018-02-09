@@ -13,7 +13,7 @@ async function evalCommand (msg, args) {
     result = await (asynchr ? eval(`(async()=>{${input}})();`) : eval(input));
     if (typeof result !== 'string') {
       result = inspect(result, {
-        depth: !(inspect(result, { depth: 1 }).length > 1990)
+        depth: +!(inspect(result, { depth: 1 }).length > 1990) // Results in either 0 or 1
       });
     }
     result = result.replace(new RegExp(`${this.config.bot.token}|${this.config.twitter.secret}`, 'gi'), 'i think the fuck not you trick ass bitch');
@@ -30,7 +30,7 @@ module.exports = {
   command: evalCommand,
   name: 'eval',
   usage: '{command} <script>',
-  aliases: ['ev'],
+  aliases: ['ev', 'e'],
   ownerOnly: true,
   description: 'Bot owner only.'
 };

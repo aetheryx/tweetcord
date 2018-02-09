@@ -7,7 +7,7 @@ module.exports = (action) => GenericCommand({
 }, {
   requiresLink: true,
   requiresTimeline: false,
-  requiredArguments: `Missing required arguments. Who do you want to ${action}?`,
+  requiredArgs: `Missing required arguments. Who do you want to ${action}?`,
   commandFn: async function genericFollowCommand (msg, args, link) {
     if (args[1]) {
       return 'Twitter user handles can\'t include a space.';
@@ -27,6 +27,8 @@ module.exports = (action) => GenericCommand({
     const res = await this.RestClient[action](link, { screen_name: args }).catch(e => {
       if (e.errors && e.errors.find(e => e.code === 108)) {
         this.bot.sendMessage(msg.channel.id, `I am unable to find the user \`${args}\`.`);
+      } else if (e.errors && e.errors.find(e => e.code === 158)) {
+        this.bot.sendMessage(msg.channel.id, 'You can\'t follow yourself.');
       } else {
         throw e;
       }

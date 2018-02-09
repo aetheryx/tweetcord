@@ -9,7 +9,7 @@ async function helpCommand (msg, args) {
   const prefix = await this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
 
   if (!args[0]) {
-    const content = 'Run the `link` command to link your Twitter account, and then use the `setup` command to set up a stream of events to a specific channel.\nHere\'s a list of all of my commands:';
+    const content = 'Run the `link` command to link your Twitter account, and then use the `stream` command to set up a stream of events to a specific channel.\nHere\'s a list of all of my commands:';
 
     return {
       content,
@@ -18,7 +18,10 @@ async function helpCommand (msg, args) {
       }
     };
   } else {
-    const command = this.bot.commands[args[0]] || this.bot.commands[Object.keys(this.bot.commands).find(c => this.bot.commands[c].aliases.includes(args[0]))];
+    const command = this.bot.commands[args[0]] ||
+      this.bot.commands[
+        Object.keys(this.bot.commands).find(c => this.bot.commands[c].aliases.includes(args[0]))
+      ];
 
     if (!command || command.ownerOnly) {
       return;

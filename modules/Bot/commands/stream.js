@@ -10,7 +10,7 @@ const requiredPermissions = [
   'externalEmojis'
 ];
 
-async function setupCommand (msg) {
+async function streamCommand (msg) {
   if (!msg.channelMentions[0]) {
     return 'You need to mention a channel.';
   }
@@ -70,8 +70,8 @@ async function setupCommand (msg) {
 }
 
 module.exports = {
-  command: setupCommand,
-  name: 'setup',
-  aliases: ['setchannel'],
-  description: ''
+  command: streamCommand,
+  name: 'stream',
+  aliases: ['setup'],
+  description: 'Use this command to setup a timeline feed/stream in a textchannel.'
 };

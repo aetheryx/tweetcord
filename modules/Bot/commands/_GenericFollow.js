@@ -13,6 +13,8 @@ module.exports = (action) => GenericCommand({
       const targetLink = await this.db.getLink(msg.mentions[0].id);
       if (targetLink) {
         args = targetLink.name;
+      } else {
+        return 'This user doesn\'t have their account linked to Tweetcord.\nTry giving me their twitter handle instead, or convince to them to link up!';
       }
     } else {
       if (args[1]) {

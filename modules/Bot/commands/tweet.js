@@ -8,7 +8,7 @@ module.exports = GenericCommand({
 }, {
   requiresLink: true,
   requiresTimeline: false,
-  requiredArguments: 'Missing required arguments. What do you want to tweet?',
+  requiredArgs: 'Missing required arguments. What do you want to tweet?',
   commandFn: async function tweetCommand (msg, args, link) {
     if (args.join(' ').length > 280) {
       return `Your tweet is too big! You're ${args.length - 280} characters over the limit.`;

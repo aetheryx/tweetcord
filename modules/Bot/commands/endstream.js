@@ -1,19 +1,17 @@
-async function endstreamCommand (msg) {
-  const timeline = await this.db.getTimeline(msg.author.id);
-  if (!timeline) {
-    return 'You currently do not have a stream.';
-  }
+// commandProperties, { requiresLink, requiresTimeline, requiredArgs, commandFn }
+const GenericCommand = require(`${__dirname}/_GenericCommand.js`);
 
-  const link = await this.db.getLink(msg.author.id);
-  if (this.streams[link.twitterID]) {
-    await this.streams[link.twitterID]();
-  }
-  await this.db.deleteTimeline(msg.author.id);
-  return `The tweet stream in <#${timeline.channelID}> is successfully deleted.`;
-}
-
-module.exports = {
-  command: endstreamCommand,
+module.exports = GenericCommand({
   name: 'endstream',
-  description: 'TODO'
-};
+  description: 'Use this command to end any timeline streams.'
+}, {
+  requiresLink: true,
+  requiresTimeline: true,
+  commandFn: async function (msg, args, link, timeline) {
+    if (this.streams[link.twitterID]) {
+      await this.streams[link.twitterID]();
+    }
+    await this.db.deleteTimeline(msg.author.id);
+    return `The tweet stream in <#${timeline.channelID}> is successfully deleted.`;
+  }
+});

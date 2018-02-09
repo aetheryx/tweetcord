@@ -39,7 +39,7 @@ function createBot () {
 
           let failed = 0;
 
-          for (const file of files) {
+          for (const file of files.filter(r => !r.startsWith('_'))) {
             try {
               const command = require(`${__dirname}/commands/${file}`);
               this.commands[command.name] = Object.assign({

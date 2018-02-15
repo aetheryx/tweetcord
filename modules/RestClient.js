@@ -21,9 +21,7 @@ async function createRestClient () {
         'unretweet' : { type: 'post', endpoint: 'statuses/unretweet/:id.json' },
 
         'follow'    : { type: 'post', endpoint: 'friendships/create.json'     },
-        'unfollow'  : { type: 'post', endpoint: 'friendships/destroy.json'    },
-
-        'friends'   : { type: 'get',  endpoint: 'friends/list.json'           }
+        'unfollow'  : { type: 'post', endpoint: 'friendships/destroy.json'    }
       };
 
       for (const route in routes) {
@@ -109,6 +107,34 @@ async function createRestClient () {
       }
 
       return res;
+    }
+
+    async getFriends ({ oauth_token, oauth_secret, name }) {
+      const usernames = [];
+
+      const options = {
+        include_user_entities: false,
+        screen_name: name,
+        skip_status: 1,
+        count: 200
+      };
+
+      let cursor = '-1';
+      let res = { next_cursor: -1 };
+
+      while (res.next_cursor !== 0) {
+        res = await this.genericRequest(
+          'get',
+          'friends/list.json',
+          oauth_secret,
+          Object.assign(options, { cursor }),
+          Object.assign(options, { cursor, oauth_token })
+        );
+        cursor = res.next_cursor_str;
+        usernames.push(...res.users.map(r => r.screen_name));
+      }
+
+      return usernames;
     }
   }
 

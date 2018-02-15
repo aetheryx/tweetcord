@@ -104,13 +104,9 @@ async function createRestClient () {
         }
       });
 
-      console.log(res);
-
       if (res.error || res.errors) {
         throw res;
       }
-
-
 
       return res;
     }

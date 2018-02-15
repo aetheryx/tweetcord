@@ -28,7 +28,7 @@ async function createRestClient () {
 
       for (const route in routes) {
         this[route] = async ({ oauth_token, oauth_secret }, params) => {
-          const info = routes[route];
+          const info = { ...routes[route] }; // Shallow copy the object; we're editing the endpoint on L34, we don't want that change to stick
           for (const param in params) {
             if (info.endpoint.includes(`:${param}`)) {
               info.endpoint = info.endpoint.replace(`:${param}`, params[param]);
@@ -104,9 +104,13 @@ async function createRestClient () {
         }
       });
 
+      console.log(res);
+
       if (res.error || res.errors) {
         throw res;
       }
+
+
 
       return res;
     }

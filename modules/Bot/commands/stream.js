@@ -72,6 +72,5 @@ async function streamCommand (msg) {
 module.exports = {
   command: streamCommand,
   name: 'stream',
-  aliases: ['setup'],
   description: 'Use this command to setup a timeline feed/stream in a textchannel.'
 };

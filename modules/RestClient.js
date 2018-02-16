@@ -109,12 +109,12 @@ async function createRestClient () {
       return res;
     }
 
-    async getFriends ({ oauth_token, oauth_secret, name }) {
+    async genericTruncatedRequest (endpoint, { oauth_token, oauth_secret, name }, targetName) {
       const usernames = [];
 
       const options = {
         include_user_entities: false,
-        screen_name: name,
+        screen_name: targetName || name,
         skip_status: 1,
         count: 200
       };
@@ -125,7 +125,7 @@ async function createRestClient () {
       while (res.next_cursor !== 0) {
         res = await this.genericRequest(
           'get',
-          'friends/list.json',
+          endpoint,
           oauth_secret,
           Object.assign(options, { cursor }),
           Object.assign(options, { cursor, oauth_token })
@@ -135,6 +135,14 @@ async function createRestClient () {
       }
 
       return usernames;
+    }
+
+    async getFriends (link) {
+      return this.genericTruncatedRequest('friends/list.json', link);
+    }
+
+    async getFollowers (link, targetName) {
+      return this.genericTruncatedRequest('followers/list.json', link, targetName);
     }
   }
 

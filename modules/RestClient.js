@@ -8,6 +8,7 @@ async function createRestClient () {
 
       this.BASE_URL = 'api.twitter.com/1.1/';
       this.STREAM_URL = 'userstream.twitter.com/1.1/user.json';
+      this.MEDIA_URL = 'upload.twitter.com/1.1/media/upload.json';
 
       this.buildRoutes();
     }
@@ -143,6 +144,24 @@ async function createRestClient () {
 
     async getFollowers (link, targetName) {
       return this.genericTruncatedRequest('followers/list.json', link, targetName);
+    }
+
+    async uploadMedia ({ oauth_token, oauth_secret }, source) {
+      const sourceB64 = await _this.utils.get({
+        url: source
+      }).then(r => r.toString('base64'));
+      const formData = _this.utils.multipart('media_data', sourceB64);
+
+      const OAuthData = _this.OAuthClient.signHeaders('POST', this.MEDIA_URL, { oauth_token }, oauth_secret);
+
+      return _this.utils.post({
+        url: this.MEDIA_URL,
+        headers: {
+          Authorization: `OAuth ${OAuthData}`,
+          'Content-Length': Buffer.byteLength(formData.body),
+          'Content-Type': formData.contentType
+        }
+      }, '', false, formData.body);
     }
   }
 

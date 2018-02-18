@@ -14,7 +14,15 @@ module.exports = GenericCommand({
       return `Your tweet is too big! You're ${args.length - 280} characters over the limit.`;
     }
 
-    const res = await this.RestClient.tweet(link, { status: args.join(' ') }).catch(e => {
+    let mediaID;
+    if (msg.attachments[0]) {
+      mediaID = await this.RestClient.uploadMedia(link, msg.attachments[0].url).then(r => r.media_id_string);
+    }
+
+    const res = await this.RestClient.tweet(link, {
+      status: args.join(' '),
+      media_ids: mediaID
+    }).catch(e => {
       if (e.errors && e.errors.find(e => e.code === 187)) {
         this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');
       } else {

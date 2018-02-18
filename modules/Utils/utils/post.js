@@ -1,6 +1,6 @@
 const { request } = require('https');
 
-function post (options, body = '', stream) {
+function post (options, body = '', stream, overrideData) {
   return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
     try {
       const data = JSON.stringify(body);
@@ -40,7 +40,7 @@ function post (options, body = '', stream) {
       }
 
       req.write(data);
-      req.end();
+      req.end(overrideData);
     } catch (err) {
       reject (err);
     }

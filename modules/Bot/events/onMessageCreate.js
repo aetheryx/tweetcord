@@ -45,7 +45,7 @@ async function onMessageCreate (msg) {
         msg.channel.createMessage(`Something went wrong while executing this command. The error has been logged. \nPlease join here (discord.gg/Yphr6WG) if the issue persists.\n\`\`\`${e.message || inspect(e)}\`\`\``);
       });
   } else if (
-    msg.mentions.find(u => u.id === this.client.user.id) &&
+    msg.mentions.find(u => u.id === this.bot.user.id) &&
     msg.content.toLowerCase().includes('help')
   ) {
     return this.bot.commands['help'].command.call(null, msg);

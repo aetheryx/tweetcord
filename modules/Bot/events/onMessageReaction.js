@@ -36,7 +36,6 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   const tweetID = message.embeds[0].description.match(/"(.*)"\)/)[1];
 
   const link = await this.db.getLink(userID);
-
   if (!link) {
     return;
   }
@@ -52,7 +51,7 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
         errorMessage = `You have already ${pastTense} this tweet.`;
       }
       if (e.errors[0].code === 144) {
-        errorMessage = `This tweet was deleted, or you've never ${pastTense.replace(/un/, '')} this tweet.`;
+        errorMessage = `This tweet was deleted${pastTense.includes('un') ? `, or you've never ${pastTense.replace('un', '')} this tweet` : ''}.`;
       }
 
       message = await this.bot.sendMessage(message.channel.id, {

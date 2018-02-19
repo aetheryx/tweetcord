@@ -22,6 +22,17 @@ module.exports = GenericCommand({
       status.media_ids = await this.RestClient.uploadMedia(link, msg.attachments[0].url).then(r => r.media_id_string);
     }
 
+    if (msg.mentions[0]) {
+      await Promise.all(
+        msg.mentions.map(async u => {
+          const link = await this.db.getLink(u.id);
+          if (link) {
+            status.status = status.status.replace(new RegExp(`@${u.username}`), `@${link.name}`);
+          }
+        })
+      );
+    }
+
     const res = await this.RestClient.tweet(link, status).catch(e => {
       if (e.errors && e.errors.find(e => e.code === 187)) {
         this.bot.sendMessage(msg.channel.id, 'You\'ve already posted this tweet before.');

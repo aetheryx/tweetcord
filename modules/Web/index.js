@@ -20,8 +20,6 @@ async function createWeb () {
   for (const route in routes) {
     routes[route].call(this);
   }
-
-  this.app = app;
 }
 
 module.exports = {

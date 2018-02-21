@@ -1,7 +1,7 @@
 const { request } = require('https');
 
 function post (options, body = '', stream, overrideData) {
-  return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
+  return new Promise((resolve, reject) => {
     try {
       const data = JSON.stringify(body);
 
@@ -10,7 +10,7 @@ function post (options, body = '', stream, overrideData) {
         hostname: url.shift(),
         path: `/${url.join('/')}`,
         method: 'POST',
-        headers: {}
+        headers: Object.assign({ 'User-Agent': 'Tweetcord (https://github.com/aetheryx/tweetcord)' }, options.headers)
       }, options);
 
       let output = '';
@@ -31,9 +31,7 @@ function post (options, body = '', stream, overrideData) {
         });
       });
 
-      req.on('error', (err) => {
-        reject(err);
-      });
+      req.on('error', reject);
 
       if (stream) {
         resolve(req);

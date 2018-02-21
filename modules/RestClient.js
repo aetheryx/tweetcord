@@ -79,7 +79,6 @@ async function createRestClient () {
         url: this.STREAM_URL + _this.utils.qs.create(withFollowers),
         headers: {
           'Authorization': `OAuth ${OAuthData}`,
-          'User-Agent': 'Tweetcord (github.com/aetheryx/tweetcord)',
           'Content-Length': '0'
         }
       }, '', true);

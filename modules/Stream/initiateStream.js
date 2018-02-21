@@ -10,6 +10,7 @@ async function initiateStream (timeline) {
 
   stream.on('response', (r) => {
     let currentMessage = '';
+    let lastResponse = -1;
     const parse = (chunk) => {
       currentMessage += chunk;
       chunk = currentMessage;
@@ -20,10 +21,10 @@ async function initiateStream (timeline) {
     };
 
     r.on('data', (data) => {
+      lastResponse = Date.now();
       data = data.toString();
       if (
         data === '\r\n' || // Ignore keep-alives
-        data.startsWith('{"friends') ||
         data === 'Exceeded connection limit for user\r\n'
       ) {
         return;
@@ -33,7 +34,14 @@ async function initiateStream (timeline) {
         return postMessage.call(this, parsed, timeline, link);
       }
     });
-    this.streams[link.twitterID] = async () => { r.destroy(); stream.destroy(); };
+
+    this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
+
+    setInterval(() => {
+      if (Date.now() - lastResponse > 60e3) {
+        this.log(`Potentially dead streams? ${link.name}`);
+      }
+    }, 5e3);
   });
 }
 

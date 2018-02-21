@@ -30,4 +30,4 @@ module.exports = {
       this.log(`Unhandled rejection: \n${err.stack || err instanceof Object ? inspect(err) : err}`, 'error'); // eslint-disable-line no-console
     });
   }
-}
+};

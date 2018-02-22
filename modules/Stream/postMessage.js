@@ -20,7 +20,8 @@ async function postMessage (res, timeline, link) {
   if (
     res.delete || // TODO: Parse delete events
     res.direct_message || // TODO: Parse DMs
-    res.event && !events.includes(res.event)
+    res.event && !events.includes(res.event) ||
+    res.friends
   ) {
     return;
   }
@@ -55,7 +56,7 @@ async function postMessage (res, timeline, link) {
 
   if (
     info[5] && target.id_str !== link.twitterID ||
-    cooldowns.has(res.source.id_str) ||
+    cooldowns.has(author.id_str) ||
     timeline.isUserStream && author.id_str !== timeline.twitterID
   ) {
     return;
@@ -65,7 +66,14 @@ async function postMessage (res, timeline, link) {
     replyString = replyString.replace('your', `@${target.screen_name}'s`);
   }
 
-  const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
+  const tweetBody = (() => {
+    let body = (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || '';
+    const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
+
+    body = this.utils.parseHTMLEntities(body);
+    body = this.utils.parseTwitterEntities(body, resource.entities) + metadata;
+    return body;
+  })();
 
   const msg = await this.bot.sendMessage(timeline.channelID, {
     title: `${author.name} ${replyString}`,
@@ -78,7 +86,7 @@ async function postMessage (res, timeline, link) {
     image: {
       url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
     },
-    description: this.utils.parseEntities((resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || '') + metadata,
+    description: tweetBody,
     timestamp: new Date(res.created_at)
   });
 

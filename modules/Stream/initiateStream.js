@@ -43,7 +43,7 @@ async function initiateStream (timeline) {
         clearInterval(checkIntegrity);
         this.streams[link.twitterID]();
         this.log(`Rebuilding broken stream: ${link.name}`);
-        initiateStream(timeline);
+        initiateStream.call(this, timeline);
       }
     }, 15e3);
   });

@@ -46,7 +46,7 @@ module.exports = GenericCommand({
       return {
         title: 'Tweet successfully sent',
         url: `https://twitter.com/${res.user.screen_name}/status/${res.id_str}`,
-        description: this.utils.parseEntities(res.text),
+        description: this.utils.parseHTMLEntities(res.text),
         timestamp: new Date()
       };
     }

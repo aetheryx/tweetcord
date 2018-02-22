@@ -38,10 +38,13 @@ async function initiateStream (timeline) {
     this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
 
     setInterval(() => {
+      // Check for stream integrity periodically, and if something is fucky, rebuild
       if (Date.now() - lastResponse > 60e3) {
-        this.log(`Potentially dead streams? ${link.name}`);
+        this.streams[link.twitterID]();
+        this.log(`Rebuilding broken stream: ${link.name}`);
+        initiateStream(timeline);
       }
-    }, 5e3);
+    }, 15e3);
   });
 }
 

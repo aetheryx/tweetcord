@@ -1,11 +1,11 @@
 const entityMap = {
   'text':        { char: '#', value: 'text',        endpoint: '/hashtag/' },
   'screen_name': { char: '@', value: 'screen_name', endpoint: '/' }
-}
+};
 
 module.exports = function parseTwitterEntities (body, entities) {
-  for (const entityType in entities) {
-    for (const entity of entities[entityType]) {
+  for (const entityType of Object.values(entities)) {
+    for (const entity of entityType) {
       for (const parser in entityMap) {
         if (entity[parser]) {
           const info = entityMap[parser];
@@ -17,6 +17,6 @@ module.exports = function parseTwitterEntities (body, entities) {
       }
     }
   }
-  
+
   return body;
-}
+};

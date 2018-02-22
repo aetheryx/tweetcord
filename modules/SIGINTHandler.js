@@ -15,6 +15,7 @@ async function cleanExit () {
     for (const stream in this.streams) {
       await this.streams[stream](); // this.streams is an object of functions that destroy the stream
     }
+    process.nextTick(process.exit);
   } catch (e) {
     this.log(`Unclean exit: ${e.message}`, 'error');
     process.exit(1);

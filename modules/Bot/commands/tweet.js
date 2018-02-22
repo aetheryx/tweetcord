@@ -18,8 +18,15 @@ module.exports = GenericCommand({
       status: args.join(' ')
     };
 
-    if (msg.attachments[0]) {
-      status.media_ids = await this.RestClient.uploadMedia(link, msg.attachments[0].url).then(r => r.media_id_string);
+    let mediaURL;
+    if (msg.embeds[0] && msg.embeds[0].type === 'image') {
+      mediaURL = msg.embeds[0].thumbnail.url;
+      status.status = status.status.replace(new RegExp(`\\s*${msg.embeds[0].url}\\s*`), '');
+    } else if (msg.attachments[0]) {
+      mediaURL = msg.attachments[0].url;
+    }
+    if (mediaURL) {
+      status.media_ids = await this.RestClient.uploadMedia(link, mediaURL).then(r => r.media_id_string);
     }
 
     if (msg.mentions[0]) {
@@ -46,7 +53,8 @@ module.exports = GenericCommand({
       return {
         title: 'Tweet successfully sent',
         url: `https://twitter.com/${res.user.screen_name}/status/${res.id_str}`,
-        description: this.utils.parseHTMLEntities(res.text),
+        description: this.utils.parseTwitterEntities(this.utils.parseHTMLEntities(res.text), res.entities),
+        image: { url: res.extended_entities && res.extended_entities.media ? res.extended_entities.media[0].media_url_https : '' },
         timestamp: new Date()
       };
     }

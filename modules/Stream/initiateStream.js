@@ -6,6 +6,8 @@ async function initiateStream (timeline) {
     return; // TODO: remove timeline
   }
 
+  let rebuild = true;
+
   const stream = await this.RestClient.createTweetStream(link, !timeline.isUserStream);
 
   stream.on('response', (r) => {
@@ -20,14 +22,20 @@ async function initiateStream (timeline) {
       }
     };
 
+    this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
+
     r.on('data', (data) => {
       lastResponse = Date.now();
       data = data.toString();
-      if (
-        data === '\r\n' || // Ignore keep-alives
-        data === 'Exceeded connection limit for user\r\n'
-      ) {
+      if (data === '\r\n') {
         return;
+      } else if (
+        data === 'Exceeded connection limit for user\r\n' ||
+        data.includes('401') ||
+        data.includes('"code":6')
+      ) {
+        rebuild = false;
+        return this.streams[link.twitterID]();
       }
       const parsed = parse(data);
       if (parsed) {
@@ -35,9 +43,13 @@ async function initiateStream (timeline) {
       }
     });
 
-    this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
-
     const checkIntegrity = setInterval(() => {
+      if (!rebuild) {
+        // This'll only happen if the user revoked application access
+        // in which case we don't need to do integrity checks anymore and the auth tokens will eventually be deleted
+        return clearInterval(checkIntegrity);
+      }
+
       // Check for stream integrity periodically, and if something is fucky, rebuild
       if (Date.now() - lastResponse > 60e3) {
         clearInterval(checkIntegrity);
@@ -45,7 +57,7 @@ async function initiateStream (timeline) {
         this.log(`Rebuilding broken stream: ${link.name}`);
         initiateStream.call(this, timeline);
       }
-    }, 15e3);
+    }, 60e3);
   });
 }
 

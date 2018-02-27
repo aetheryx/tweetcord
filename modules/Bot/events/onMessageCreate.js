@@ -5,9 +5,16 @@ async function onMessageCreate (msg) {
     return;
   }
 
-  const mentionPrefix = msg.content.match(new RegExp(`^<@!*${this.bot.user.id}>`));
-  const prefix = mentionPrefix ? `${mentionPrefix[0]} ` : await this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
-  if (!msg.content.toLowerCase().startsWith(prefix)) {
+  const prefix = await (() => {
+    const isMentionPrefix = msg.content.match(new RegExp(`^<@!*${this.bot.user.id}>`));
+    const { nick, username } = msg.channel.guild.members.get(this.bot.user.id);
+
+    return isMentionPrefix
+      ? `@${nick || username} `
+      : this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null)
+  })();
+
+  if (!msg.cleanContent.toLowerCase().startsWith(prefix.toLowerCase())) {
     return;
   }
 

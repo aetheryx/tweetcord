@@ -41,14 +41,20 @@ async function streamCommand (msg) {
       `You've already linked with <#${potentialTimeline.channelID}>.`;
   }
 
-  this.bot.sendMessage(msg.channel.id, 'Would you like the stream to be a *user stream* or a *follower stream*?\n\nA follower stream is the kind of stream that will show all of the tweets you can see on your timeline - this means any tweets you send and any tweets sent by people you follow.\nA user stream is the kind of stream that *only streams your own tweets*. The stream will not display tweets from anyone but your account.\n\nReply with your answer.');
-  const type = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['user', 'follow'].some(type => m.content.toLowerCase().includes(type)));
+  this.bot.sendMessage(msg.channel.id, {
+    title: '⚠ Read the following message carefully.',
+    description: '**Would you like the stream to be a __user stream__ or a __follower stream__?**\n\nA __follower stream__ is the kind of stream that will show **all of the tweets you can see on your timeline**, so any tweets you send, and any tweets sent by people you follow.\n\nA __user stream__ is the kind of stream that **only streams your own tweets**, so only (re)tweets sent by you.',
+    footer: { text: 'Reply with your answer.' }
+  });
+  const type = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 60e3, (m) => ['user', 'follow'].some(type => m.content.toLowerCase().includes(type)));
   if (!type) {
     return 'Prompt timed out.';
   }
   const isUserStream = type.content.toLowerCase().includes('user');
 
-  this.bot.sendMessage(msg.channel.id, `Are you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able to read any new tweets, likes, retweets or follows on your timeline.\n\nRespond with \`yes\` or \`no\`.`);
+  this.bot.sendMessage(msg.channel.id, {
+    description: `Understood! A __${isUserStream ? 'user' : 'follower'} stream__ it is.\n\nAre you sure you want to link <#${msg.channelMentions[0]}> with your twitter account (\`@${link.name}\`)?\nThis means anyone who can see <#${msg.channelMentions[0]}> will be able ${isUserStream ? 'see any (re)tweets made by you' : 'to read any new tweets, likes, retweets or follows on your timeline'}.\n\nRespond with \`yes\` or \`no\`.`
+  });
 
   const message = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3, (m) => ['y', 'n', 'yes', 'no'].includes(m.content.toLowerCase()));
   if (!message) {
@@ -65,7 +71,10 @@ async function streamCommand (msg) {
       isUserStream
     });
     await initiateStream.call(this, await this.db.getTimeline(msg.author.id));
-    return `<#${msg.channelMentions[0]}> has been successfully set up for your timeline. Any new events will now appear there.`;
+    return {
+      title: '☑ Success!',
+      description: `<#${msg.channelMentions[0]}> has been successfully set up for your ${isUserStream ? 'user' : 'follower'} stream.\nAny new events will now appear there.`
+    };
   }
 }
 

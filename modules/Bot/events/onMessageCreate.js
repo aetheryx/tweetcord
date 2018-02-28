@@ -57,7 +57,7 @@ async function onMessageCreate (msg) {
     msg.mentions.find(u => u.id === this.bot.user.id) &&
     msg.content.toLowerCase().includes('help')
   ) {
-    return this.bot.commands['help'].command.call(null, msg);
+    return this.bot.commands['help'].command.call(this, msg);
   }
 }
 

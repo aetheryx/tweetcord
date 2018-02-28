@@ -31,7 +31,7 @@ async function initiateStream (timeline) {
         return;
       } else if (
         data === 'Exceeded connection limit for user\r\n' ||
-        data.includes('401') ||
+        r.statusCode === 401 ||
         data.includes('"code":6')
       ) {
         rebuild = false;

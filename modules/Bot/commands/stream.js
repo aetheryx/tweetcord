@@ -36,9 +36,9 @@ async function streamCommand (msg) {
   const potentialTimelines = await Promise.all([msg.channelMentions[0], msg.author.id].map(this.db.getTimeline));
   const potentialTimeline = potentialTimelines[0] || potentialTimelines[1];
   if (potentialTimeline) {
-    return potentialTimeline.channelID === msg.channelMentions[0] ?
-      `The channel <#${msg.channelMentions[0]}> has already been linked with ${link.twitterID === potentialTimeline.twitterID ? 'your twitter account' : await this.RestClient.getTagByID(potentialTimeline.userID)}.` :
-      `You've already linked with <#${potentialTimeline.channelID}>.`;
+    return potentialTimeline.channelID === msg.channelMentions[0]
+      ? `The channel <#${msg.channelMentions[0]}> has already been linked with ${link.twitterID === potentialTimeline.twitterID ? 'your twitter account' : await this.RestClient.getTagByID(potentialTimeline.userID)}.`
+      : `You've already linked with <#${potentialTimeline.channelID}>.`;
   }
 
   this.bot.sendMessage(msg.channel.id, {

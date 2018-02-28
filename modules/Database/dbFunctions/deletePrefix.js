@@ -1,5 +1,3 @@
-async function deletePrefix (id) {
+module.exports = async function deletePrefix (id) {
   return this.dbTables['prefixes'].remove({ id });
-}
-
-module.exports = deletePrefix;
+};

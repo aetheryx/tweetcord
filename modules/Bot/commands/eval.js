@@ -10,7 +10,7 @@ async function evalCommand (msg, args) {
 
   let result;
   try {
-    result = await (asynchr ? eval(`(async()=>{${input}})();`) : eval(input));
+    result = await (asynchr ? eval(`(async()=>{${input}})();`) : eval(input)); // eslint-disable-line no-eval
     if (typeof result !== 'string') {
       result = inspect(result, {
         depth: +!(inspect(result, { depth: 1 }).length > 1990) // Results in either 0 or 1

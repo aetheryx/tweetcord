@@ -28,9 +28,9 @@ module.exports = (action) => GenericCommand({
 
     const followers = await this.RestClient.getFriends(link).then(followers => followers.map(user => user.toLowerCase()));
     if ((action === 'follow') === (followers.includes(args.toLowerCase()))) { // eslint-disable-line no-extra-parens
-      return action === 'follow' ?
-        `You're already following \`${args}\`.` :
-        `You currently aren't following \`${args}\`.`;
+      return action === 'follow'
+        ? `You're already following \`${args}\`.`
+        : `You currently aren't following \`${args}\`.`;
     }
 
     const res = await this.RestClient[action](link, { screen_name: args }).catch(e => {

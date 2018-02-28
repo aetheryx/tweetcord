@@ -26,4 +26,3 @@ class MessageCollector {
 }
 
 module.exports = MessageCollector;
-

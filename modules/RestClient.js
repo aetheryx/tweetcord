@@ -1,3 +1,5 @@
+/* eslint-disable standard/object-curly-even-spacing */
+
 async function createRestClient () {
   const _this = this;
 

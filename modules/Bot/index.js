@@ -55,7 +55,6 @@ function createBot () {
 
           _this.log(`Successfully loaded ${files.length - failed}/${files.length} commands.`);
         });
-
       }
 
       async sendMessage (target, content, isUser = false) {

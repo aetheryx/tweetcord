@@ -1,7 +1,7 @@
 async function pingCommand (msg) {
-  const shard = msg.channel.guild ?
-    msg.channel.guild.shard :
-    this.bot.shards.get(0);
+  const shard = msg.channel.guild
+    ? msg.channel.guild.shard
+    : this.bot.shards.get(0);
 
   return `:ping_pong: Pong! ${shard.latency.toFixed()}ms`;
 }

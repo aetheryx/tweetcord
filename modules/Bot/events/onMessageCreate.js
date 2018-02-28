@@ -11,7 +11,7 @@ async function onMessageCreate (msg) {
 
     return isMentionPrefix
       ? `@${nick || username} `
-      : this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null)
+      : this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
   })();
 
   if (!msg.cleanContent.toLowerCase().startsWith(prefix.toLowerCase())) {

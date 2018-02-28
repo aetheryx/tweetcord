@@ -8,5 +8,5 @@ module.exports = {
   name: 'reboot',
   aliases: ['restart'],
   ownerOnly: true,
-  description: 'Bot owner only.',
+  description: 'Bot owner only.'
 };

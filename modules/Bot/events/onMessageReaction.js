@@ -61,7 +61,6 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
       });
     });
 
-
   if (res) {
     message = await this.bot.sendMessage(message.channel.id, {
       title: `Successfully ${pastTense} the following tweet:`,

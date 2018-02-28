@@ -40,7 +40,7 @@ function post (options, body = '', stream, overrideData) {
       req.write(data);
       req.end(overrideData);
     } catch (err) {
-      reject (err);
+      reject(err);
     }
   });
 }

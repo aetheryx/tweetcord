@@ -3,7 +3,7 @@ const entityMap = {
   'screen_name': { char: '@', value: 'screen_name', endpoint: '/' }
 };
 
-const escapeMarkdown = /(_|\*|~)/g
+const escapeMarkdown = /(_|\*|~)/g;
 
 module.exports = function parseTwitterEntities (body, entities) {
   for (const entityType of Object.values(entities)) {

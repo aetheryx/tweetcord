@@ -19,9 +19,7 @@ async function helpCommand (msg, args) {
     };
   } else {
     const command = this.bot.commands[args[0]] ||
-      this.bot.commands[
-        Object.keys(this.bot.commands).find(c => this.bot.commands[c].aliases.includes(args[0]))
-      ];
+      this.bot.commands[Object.keys(this.bot.commands).find(c => this.bot.commands[c].aliases.includes(args[0]))];
 
     if (!command || command.ownerOnly) {
       return;

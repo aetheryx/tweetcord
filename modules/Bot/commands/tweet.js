@@ -31,7 +31,7 @@ module.exports = GenericCommand({
 
     if (msg.mentions[0]) {
       await Promise.all(
-        msg.mentions.map(async u => {
+        msg.mentions.map(async (u) => {
           u = msg.channel.guild.members.get(u.id);
           const link = await this.db.getLink(u.id);
           if (link) {

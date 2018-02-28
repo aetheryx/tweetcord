@@ -13,14 +13,14 @@ const replies = {
   'retweet':  [ 'retweeted your tweet:', 'user',   'retweeted_status', 'user',   true,   false ],
   'mention':  [ 'mentioned you:',        'user',    null,              null,     true,   false ],
   'tweet':    [ 'tweeted:',              'user',    null,              null,     true,   false ],
-  'follow':   [ 'followed you' ,         'source',  null,              'target', false,  true  ]
+  'follow':   [ 'followed you',          'source',  null,              'target', false,  true  ]
 };
 
 async function postMessage (res, timeline, link) {
   if (
     res.delete || // TODO: Parse delete events
     res.direct_message || // TODO: Parse DMs
-    res.event && !events.includes(res.event) ||
+    (res.event && !events.includes(res.event)) ||
     res.friends
   ) {
     return;
@@ -32,7 +32,7 @@ async function postMessage (res, timeline, link) {
     event = Object.keys(replies).find(g => g === res.event);
   } else if (res.retweeted_status) {
     event = 'retweet';
-  } else if (res.is_quote_status || res.target_object && res.target_object.is_quote_status) {
+  } else if (res.is_quote_status || (res.target_object && res.target_object.is_quote_status)) {
     if (res.event !== 'quoted_tweet' && res.quoted_status.user.id_str === link.twitterID) {
       return;
     }
@@ -51,13 +51,13 @@ async function postMessage (res, timeline, link) {
   const author = res[info[1]];
   const source = res[info[2]];
   const resource = res.text ? res : source || {};
-  const target = source && source[info[3]] || res[info[3]] || author;
+  const target = (source && source[info[3]]) || res[info[3]] || author;
   const isTweet = info[4];
 
   if (
-    info[5] && target.id_str !== link.twitterID ||
     cooldowns.has(author.id_str) ||
-    timeline.isUserStream && author.id_str !== timeline.twitterID
+    (info[5] && target.id_str !== link.twitterID) ||
+    (timeline.isUserStream && author.id_str !== timeline.twitterID)
   ) {
     return;
   }

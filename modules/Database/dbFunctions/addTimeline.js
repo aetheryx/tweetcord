@@ -1,5 +1,3 @@
-async function addTimeline (options) {
+module.exports = async function addTimeline (options) {
   return this.dbTables['timelines'].insert(options);
-}
-
-module.exports = addTimeline;
+};

@@ -31,4 +31,4 @@ class Tweetcord {
   }
 }
 
-new Tweetcord();
+(() => new Tweetcord())();

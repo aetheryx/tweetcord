@@ -71,6 +71,7 @@ async function postMessage (res, timeline, link) {
       ? `RT @${resource.retweeted_status.user.screen_name}: ${resource.retweeted_status.extended_tweet ? resource.retweeted_status.extended_tweet.full_text : resource.retweeted_status.text}` // Because TWAPI is dumb and truncates retweets without providing the full body, we construct it ourselves
       : (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || ''; // empty string fallback in the case of follows, which don't have a tweet body
 
+    // We mask the tweet ID in the description with a cheeky zws hyperlink, it's later used in Bot/events/onMessageReactionAdd for retweet/like actions
     const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
 
     body = this.utils.parseHTMLEntities(body);
@@ -82,7 +83,7 @@ async function postMessage (res, timeline, link) {
     title: `${author.name} ${replyString}`,
     url: `https://twitter.com/${author.screen_name}${isTweet ? `/status/${resource.id_str}` : ''}`,
     author: {
-      name: `@${author.screen_name}`,
+      name: `${author.name} (@${author.screen_name})`,
       url: `https://twitter.com/${author.screen_name}`,
       icon_url: author.profile_image_url
     },
@@ -90,7 +91,8 @@ async function postMessage (res, timeline, link) {
       url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
     },
     description: tweetBody,
-    timestamp: new Date(res.created_at)
+    timestamp: new Date(res.created_at),
+    footer: { text: resource.place ? resource.place.full_name : author.location }
   });
 
   if (msg && isTweet) {

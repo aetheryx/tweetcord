@@ -1,7 +1,7 @@
 const os = require('os');
 const totalMem = os.totalmem();
-const { version: erisVersion } = require(`${__dirname}/../../../node_modules/eris/package.json`);
-const { version: mongoVersion } = require(`${__dirname}/../../../node_modules/mongodb/package.json`);
+const { version: erisVersion } = require('eris/package.json');
+const { version: mongoVersion } = require('mongodb/package.json');
 
 const inline = true;
 

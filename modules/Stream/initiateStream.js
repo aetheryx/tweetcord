@@ -45,6 +45,7 @@ async function initiateStream (timeline) {
 
     const checkIntegrity = setInterval(() => {
       if (!rebuild) {
+        this.log(`Stopping integrity checks for ${link.name}`);
         // This'll only happen if the user revoked application access
         // in which case we don't need to do integrity checks anymore and the auth tokens will eventually be deleted
         return clearInterval(checkIntegrity);

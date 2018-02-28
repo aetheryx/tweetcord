@@ -7,10 +7,12 @@ async function onMessageCreate (msg) {
 
   const prefix = await (() => {
     const isMentionPrefix = msg.content.match(new RegExp(`^<@!*${this.bot.user.id}>`));
-    const { nick, username } = msg.channel.guild.members.get(this.bot.user.id);
+    const me = msg.channel.guild
+      ? msg.channel.guild.members.get(this.bot.user.id)
+      : { username: this.bot.user.username };
 
     return isMentionPrefix
-      ? `@${nick || username} `
+      ? `@${me.nick || me.username} `
       : this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
   })();
 

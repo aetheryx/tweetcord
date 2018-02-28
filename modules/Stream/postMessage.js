@@ -67,7 +67,10 @@ async function postMessage (res, timeline, link) {
   }
 
   const tweetBody = (() => {
-    let body = (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || '';
+    let body = event === 'retweet'
+      ? `RT @${resource.retweeted_status.user.screen_name}: ${resource.retweeted_status.extended_tweet ? resource.retweeted_status.extended_tweet.full_text : resource.retweeted_status.text}` // Because TWAPI is dumb and truncates retweets without providing the full body, we construct it ourselves
+      : (resource.extended_tweet ? resource.extended_tweet.full_text : resource.text) || ''; // empty string fallback in the case of follows, which don't have a tweet body
+
     const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
 
     body = this.utils.parseHTMLEntities(body);

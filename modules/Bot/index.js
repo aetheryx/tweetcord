@@ -77,7 +77,8 @@ function createBot () {
           if (
             !err.message.includes('Missing Permissions') && // TODO: re-test these and replace these strings with HTTP codes
             !err.message.includes('Cannot send messages to this user') &&
-            !err.message.includes('Missing Access')
+            !err.message.includes('Missing Access') &&
+            !err.message.includes('Unknown Channel')
           ) {
             _this.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
           } else {

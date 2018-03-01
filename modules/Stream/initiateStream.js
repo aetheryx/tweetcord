@@ -12,7 +12,7 @@ async function initiateStream (timeline) {
 
   stream.on('response', (r) => {
     let currentMessage = '';
-    let lastResponse = -1;
+    let lastResponse = { time: -1, content: '' };
     const parse = (chunk) => {
       currentMessage += chunk;
       chunk = currentMessage;
@@ -25,8 +25,10 @@ async function initiateStream (timeline) {
     this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
 
     r.on('data', (data) => {
-      lastResponse = Date.now();
       data = data.toString();
+
+      lastResponse.time = Date.now();
+      lastResponse.content = data;
       if (data === '\r\n') {
         return;
       } else if (
@@ -45,17 +47,17 @@ async function initiateStream (timeline) {
 
     const checkIntegrity = setInterval(() => {
       if (!rebuild) {
-        this.log(`Stopping integrity checks for ${link.name}`);
         // This'll only happen if the user revoked application access
         // in which case we don't need to do integrity checks anymore and the auth tokens will eventually be deleted
+        this.log(`Stopping integrity checks for ${link.name} | Content: ${lastResponse.content}`);
         return clearInterval(checkIntegrity);
       }
 
       // Check for stream integrity periodically, and if something is fucky, rebuild
-      if (Date.now() - lastResponse > 60e3) {
+      if (Date.now() - lastResponse.time > 60e3) {
         clearInterval(checkIntegrity);
         this.streams[link.twitterID]();
-        this.log(`Rebuilding broken stream: ${link.name}`);
+        this.log(`Rebuilding broken stream: ${link.name} | Content: ${lastResponse.content}`);
         initiateStream.call(this, timeline);
       }
     }, 60e3);

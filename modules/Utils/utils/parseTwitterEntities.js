@@ -3,9 +3,10 @@ const entityMap = {
   'screen_name': { char: '@', value: 'screen_name', endpoint: '/' }
 };
 
-const escapeMarkdown = /(_|\*|~)/g;
+const escapeMarkdown = /(_|\*|~)/g; // Escape markdown in entities, in twitter handles with (ex) underscores
 
-module.exports = function parseTwitterEntities (body, entities) {
+// This function parses Twitter entities (hashtags, mentions) to have hyperlinks and be bolded.
+module.exports = function parseTwitterEntities (body, entities = {}) {
   for (const entityType of Object.values(entities)) {
     for (const entity of entityType) {
       for (const parser in entityMap) {

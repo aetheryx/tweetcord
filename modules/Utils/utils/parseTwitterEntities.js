@@ -6,7 +6,7 @@ const entityMap = {
 const escapeMarkdown = /(_|\*|~)/g; // Escape markdown in entities, in twitter handles with (ex) underscores
 
 // This function parses Twitter entities (hashtags, mentions) to have hyperlinks and be bolded.
-module.exports = function parseTwitterEntities (body, entities = {}) {
+module.exports = function parseTwitterEntities (body, entities) {
   for (const entityType of Object.values(entities)) {
     for (const entity of entityType) {
       for (const parser in entityMap) {

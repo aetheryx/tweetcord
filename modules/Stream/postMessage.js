@@ -75,7 +75,7 @@ async function postMessage (res, timeline, link) {
     const metadata = isTweet ? ` [\u200b]( "${resource.id_str}")` : '';
 
     body = this.utils.parseHTMLEntities(body);
-    body = this.utils.parseTwitterEntities(body, resource.entities) + metadata;
+    body = this.utils.parseTwitterEntities(body, resource.entities || {}) + metadata;
     return body;
   })();
 

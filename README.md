@@ -1,4 +1,4 @@
-# Tweetcord 
+# Tweetcord [![Discord Bots](https://discordbots.org/api/widget/servers/302864271383986176.svg)](https://discordbots.org/bot/302864271383986176)
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)  
 [![Build Status](https://travis-ci.org/Aetheryx/tweetcord.svg?branch=master)](https://travis-ci.org/Aetheryx/tweetcord)
 [![License](https://img.shields.io/github/license/aetheryx/tweetcord.svg)](https://github.com/Aetheryx/tweetcord/blob/master/LICENSE)

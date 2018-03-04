@@ -1,6 +1,6 @@
 {
   "name": "tweetcord",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Discord bot that allows you to interact with Twitter from Discord",
   "main": "main.js",
   "scripts": {

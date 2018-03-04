@@ -8,7 +8,7 @@
 
     const res = await fetch('/getIDByTag', {
       method: 'GET',
-      headers: { tag },
+      headers: { tag: encodeURIComponent(tag) },
       mode: 'cors',
       cache: 'default'
     }).then(r => r.text());
@@ -23,12 +23,13 @@
 </script>
 
 <head>
+  <meta charset="UTF-8">
   <title>Tweetcord</title>
 </head>
 
 <body>
   <h3>What's your Discord username + discriminator? This is the account that will be linked with your Twitter account.</h1>
-    <input type="text" id="tag" value= <%=tag%> />
+    <input type="text" id="tag" value="<%= tag %>" />
     <button onclick="submit()">Submit</button>
 </body>
 

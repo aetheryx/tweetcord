@@ -33,7 +33,7 @@ async function postMessage (res, timeline, link) {
   } else if (res.retweeted_status) {
     event = 'retweet';
   } else if (res.is_quote_status || (res.target_object && res.target_object.is_quote_status)) {
-    if (res.event !== 'quoted_tweet' && res.quoted_status.user.id_str === link.twitterID) {
+    if (res.event !== 'quoted_tweet' && (res.quoted_status || res.target_object.quoted_status).user.id_str === link.twitterID) {
       return;
     }
     event = 'quote';

@@ -67,9 +67,9 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
       description: message.embeds[0].description,
       footer: { text: 'This message will self-destruct in 15 seconds.' }
     });
-  }
 
-  setTimeout(message.delete.bind(message), 15e3);
+    setTimeout(message.delete.bind(message), 15e3);
+  }
 }
 
 async function add (...args) {

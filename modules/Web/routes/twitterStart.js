@@ -10,7 +10,7 @@ async function init () {
       });
 
     if (!consumerKeys.oauth_token) {
-      this.log(consumerKeys)
+      this.log(consumerKeys);
       return res.status(500).send('Something went wrong.<br>If the issue persists, please join <a href="https://discord.gg/Yphr6WG">Tweetcord\'s support server</a> for assistance.');
     }
 

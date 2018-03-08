@@ -75,7 +75,7 @@ function createBot () {
           }
         } catch (err) {
           if (!['Missing Permissions', 'Cannot send messages to this user', 'Missing Access', 'Unknown Channel']
-              .some(error => err.message.includes(error))) // TODO: re-test these and replace these strings with HTTP codes
+            .some(error => err.message.includes(error))) // TODO: re-test these and replace these strings with HTTP codes
           {
             _this.log(`Unrecognized error: ${err.stack}\n${content}`, 'error');
           } else {

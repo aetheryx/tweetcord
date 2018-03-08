@@ -1,6 +1,6 @@
 const os = require('os');
 const totalMem = os.totalmem();
-const { version: erisVersion } = require('eris/package.json');
+const { VERSION } = require('eris');
 const { version: mongoVersion } = require('mongodb/package.json');
 
 const inline = true;
@@ -20,7 +20,7 @@ async function statsCommand (msg) {
       { name: 'Ping', value: `${shard.latency.toFixed()} ms`, inline },
       { name: 'Libraries',
         value: [
-          `[Eris](https://abal.moe/Eris) v${erisVersion}`,
+          `[Eris](https://abal.moe/Eris) v${VERSION}`,
           `[Node.js](https://nodejs.org/en/) ${process.version}`,
           `[MongoDB](https://github.com/mongodb/node-mongodb-native/tree/3.0.0) ${mongoVersion}`
         ].join('\n'),

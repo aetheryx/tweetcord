@@ -30,7 +30,7 @@ async function streamCommand (msg) {
 
   const link = await this.db.getLink(msg.author.id);
   if (!link) {
-    return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
+    return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link`;
   }
 
   const potentialTimelines = await Promise.all([msg.channelMentions[0], msg.author.id].map(this.db.getTimeline));

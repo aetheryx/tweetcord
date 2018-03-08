@@ -7,7 +7,7 @@ function GenericCommand (props, { requiresLink, requiresTimeline, requiredArgs, 
 
       const link = await this.db.getLink(msg.author.id);
       if (requiresLink && !link) {
-        return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link?id=${msg.author.id}`;
+        return `You haven't linked your Twitter account yet. Please do here: ${this.config.web.domain}/link`;
       }
 
       if (requiresLink && !requiresTimeline) {

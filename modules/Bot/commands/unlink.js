@@ -1,7 +1,7 @@
 async function unlinkCommand (msg) {
   const link = await this.db.getLink(msg.author.id);
   if (!link) {
-    return `How do you want to unlink if you aren't linked yet?\n\nLink your Twitter account here: ${this.config.web.domain}/link?id=${msg.author.id}`;
+    return `How do you want to unlink if you aren't linked yet?\n\nLink your Twitter account here: ${this.config.web.domain}/link`;
   }
 
   if (this.streams[link.twitterID]) {

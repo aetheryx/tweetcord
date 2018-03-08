@@ -4,7 +4,7 @@ async function linkCommand (msg) {
     return `You've already been linked with the twitter account \`@${potentialLink.name}\`.`;
   }
 
-  return `Link your Twitter account here: ${this.config.web.domain}/link?id=${msg.author.id}`;
+  return `Link your Twitter account here: ${this.config.web.domain}/link`;
 }
 
 module.exports = {

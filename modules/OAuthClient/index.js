@@ -21,12 +21,12 @@ module.exports = {
           headers.push([ prop, props[prop] ]);
         }
         headers.push(
-          [ 'oauth_callback',         `${_this.config.web.domain}/auth/callback` ],
-          [ 'oauth_consumer_key',     this.keys.APIKey                           ],
-          [ 'oauth_nonce',            _this.utils.randomString(32)               ],
-          [ 'oauth_timestamp',        (Date.now() / 1000).toFixed()              ],
-          [ 'oauth_signature_method', 'HMAC-SHA1'                                ],
-          [ 'oauth_version',          '1.0'                                      ]
+          [ 'oauth_callback',         `${_this.config.web.domain}/twitter/cb` ],
+          [ 'oauth_consumer_key',     this.keys.APIKey                        ],
+          [ 'oauth_nonce',            _this.utils.randomString(32)            ],
+          [ 'oauth_timestamp',        (Date.now() / 1000).toFixed()           ],
+          [ 'oauth_signature_method', 'HMAC-SHA1'                             ],
+          [ 'oauth_version',          '1.0'                                   ]
         );
         headers = headers
           .map(header => header.map(this.percentEncode))
@@ -38,7 +38,7 @@ module.exports = {
             } else {
               return 0;
             }
-          }).map(header => `${header[0]}="${header[1]}"`);
+          }).map(([ key, value ]) => `${key}="${value}"`);
 
         const paramString = this.percentEncode(headers.join('&').replace(/"/g, ''));
 

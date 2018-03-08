@@ -12,6 +12,8 @@ async function createRestClient () {
       this.STREAM_URL = 'userstream.twitter.com/1.1/user.json';
       this.MEDIA_URL = 'upload.twitter.com/1.1/media/upload.json';
 
+      this.BASE_DISCORD_URL = 'discordapp.com/api/v6';
+
       this.buildRoutes();
     }
 
@@ -47,13 +49,43 @@ async function createRestClient () {
       }
     }
 
+    async getBearer (code) {
+      const options = {
+        client_id: _this.bot.user.id,
+        client_secret: _this.config.bot.clientSecret,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: `${_this.config.web.domain}/discord/cb`
+      };
+
+      const res = await _this.utils.post({
+        url: `${this.BASE_DISCORD_URL}/oauth2/token`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }, Object.keys(options).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`).join('&'));
+
+      return res;
+    }
+
+    async getUserByBearer (bearer) {
+      const res = await _this.utils.get({
+        url: `${this.BASE_DISCORD_URL}/users/@me`,
+        headers: {
+          Authorization: `Bearer ${bearer}`
+        }
+      });
+
+      return res;
+    }
+
     async getTagByID (id) {
       const cachedUser = _this.bot.users.get(id);
       if (cachedUser) {
         return `${cachedUser.username}#${cachedUser.discriminator}`;
       }
       const res = await _this.utils.get({
-        url: `discordapp.com/api/v6/users/${id}`,
+        url: `${this.BASE_DISCORD_URL}/users/${id}`,
         headers: {
           'Authorization': _this.bot.token
         }
@@ -70,6 +102,7 @@ async function createRestClient () {
       withFollowers = withFollowers
         ? { with: 'followings' }
         : { with: 'user' };
+
       const OAuthData = _this.OAuthClient.signHeaders(
         'POST',
         this.STREAM_URL,

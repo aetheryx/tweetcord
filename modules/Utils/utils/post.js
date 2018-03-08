@@ -3,7 +3,9 @@ const { request } = require('https');
 function post (options, body = '', stream, overrideData) {
   return new Promise((resolve, reject) => {
     try {
-      const data = JSON.stringify(body);
+      const data = body instanceof Object
+        ? JSON.stringify(body)
+        : body;
 
       const url = options.url.split('/');
       const postOptions = Object.assign({

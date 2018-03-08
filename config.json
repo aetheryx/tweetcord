@@ -1,0 +1,19 @@
+{
+  "twitter": {
+    "APIKey": "yorpbPMRLFKAmOaaYCG9aipgh",
+    "secret": "YG1R6sP4hnNEjmGaNsDzrprDilMIc430AhSefP9YU18B6N00sA"
+  },
+  "bot": {
+    "token": "MjkyMjg1ODMyMTg4OTE5ODEw.DTvUdA.TAhZ4WJxxNVE7nDOTClUFKKaeGQ",
+    "ownerID": "284122164582416385",
+    "defaultPrefix": "t.",
+    "clientSecret": "XJUuPkg5_fXcI_hkNAM862Alr1RjVGPr",
+    "embedColor": 1952511,
+    "botlists": []
+  },
+  "web": {
+    "port": 8080,
+    "domain": "http://localhost"
+  },
+  "dev": true
+}

@@ -14,7 +14,7 @@ async function init () {
       return res.status(500).send(`Something went wrong: <code>${user.message}</code><br>If the issue persists, please join <a href="https://discord.gg/Yphr6WG">Tweetcord's support server</a> for assistance.`);
     }
     if (await this.db.getLink(user.id)) {
-      res.status(409).send(`This Discord account is already linked. Please run the <code>unlink</code> command to unlink the account first.`);
+      return res.status(409).send(`This Discord account is already linked. Please run the <code>unlink</code> command to unlink the account first.`);
     }
     req.session.user = user;
 

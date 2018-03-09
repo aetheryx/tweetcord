@@ -9,7 +9,7 @@ async function helpCommand (msg, args) {
   const prefix = await this.db.getPrefix(msg.channel.guild ? msg.channel.guild.id : null);
 
   if (!args[0]) {
-    const content = 'Run the `link` command to link your Twitter account, and then use the `stream` command to set up a stream of events to a specific channel.\nHere\'s a list of all of my commands:';
+    const content = `My prefix in this server is \`${prefix}\`, but you can also mention me.\n\nTo get started, run the \`${prefix}link\` command to link your Twitter account, and then use the \`${prefix}stream\` command to set up a stream of events to a specific channel.\nHere's a list of all of my commands:`;
 
     return {
       content,

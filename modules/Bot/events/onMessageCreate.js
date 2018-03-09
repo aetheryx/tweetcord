@@ -21,7 +21,7 @@ async function onMessageCreate (msg) {
   }
 
   // eslint-disable-next-line prefer-const
-  let [command, ...args] = msg.cleanContent.slice(prefix.length).split(/\s+/g);
+  let [command, ...args] = msg.cleanContent.slice(prefix.length).split(/\t+| +/g);
 
   if (!command) {
     return;

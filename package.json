@@ -1,6 +1,6 @@
 {
   "name": "tweetcord",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Discord bot that allows you to interact with Twitter from Discord",
   "main": "main.js",
   "scripts": {
@@ -19,18 +19,18 @@
   "homepage": "https://github.com/Aetheryx/tweetcord#readme",
   "dependencies": {
     "ejs": "^2.5.7",
-    "eris": "^0.8.4",
+    "eris": "^0.8.5",
     "express": "^4.16.2",
     "express-session": "1.15.6",
-    "mongodb": "^3.0.2"
+    "mongodb": "^3.0.4"
   },
   "devDependencies": {
-    "eslint": "^4.18.1",
+    "eslint": "^4.18.2",
     "eslint-config-semistandard": "^12.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.0",
-    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.0"
   }
 }

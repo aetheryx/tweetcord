@@ -1,4 +1,5 @@
 const GenericCommand = require(`${__dirname}/_GenericCommand.js`);
+const emojiRX = /<:(\w+):\d+>/;
 
 module.exports = GenericCommand({
   name: 'tweet',
@@ -10,32 +11,39 @@ module.exports = GenericCommand({
   requiresTimeline: false,
   requiredArgs: 'Missing required arguments. What do you want to tweet?',
   commandFn: async function tweetCommand (msg, args, link) {
-    if (args.join(' ').length > 280) {
-      return `Your tweet is too big! You're ${args.length - 280} characters over the limit.`;
-    }
-
     const status = {
-      status: args.join(' ')
+      status: args.join(' ').replace(emojiRX, ':$1:')
     };
 
-    let mediaURL;
-    if (msg.embeds[0] && msg.embeds[0].type === 'image') {
-      mediaURL = msg.embeds[0].thumbnail.url;
-      status.status = status.status.replace(new RegExp(`\\s*${msg.embeds[0].url}\\s*`), '');
-    } else if (msg.attachments[0]) {
-      mediaURL = msg.attachments[0].url;
-    }
-    if (mediaURL) {
-      status.media_ids = await this.RestClient.uploadMedia(link, mediaURL).then(r => r.media_id_string);
+    status.media_ids = await (async () => {
+      let mediaURL;
+      if (msg.embeds[0] && msg.embeds[0].type === 'image') {
+        const url = msg.embeds[0].thumbnail.url;
+
+        if (status.status.indexOf(url) === (status.status.length - url.length)) {
+          status.status = status.status.replace(msg.embeds[0].url, '');
+          mediaURL = url;
+        }
+      } else if (msg.attachments[0]) {
+        mediaURL = msg.attachments[0].url;
+      }
+
+      return mediaURL
+        ? this.RestClient.uploadMedia(link, mediaURL).then(r => r.media_id_string)
+        : '';
+    })();
+
+    if (status.status > 280) { // We only check for the length *after* we remove any potential links to be embedded
+      return `Your tweet is too big! You're ${args.length - 280} characters over the limit.`;
     }
 
     if (msg.mentions[0]) {
       await Promise.all(
-        msg.mentions.map(async (u) => {
-          u = msg.channel.guild.members.get(u.id);
-          const link = await this.db.getLink(u.id);
+        msg.mentions.map(async (member) => {
+          member = msg.channel.guild.members.get(member.id);
+          const link = await this.db.getLink(member.id);
           if (link) {
-            status.status = status.status.replace(new RegExp(`@${u.nick || u.user.username}`), `@${link.name}`);
+            status.status = status.status.replace(new RegExp(`@${member.nick || member.user.username}`), `@${link.name}`);
           }
         })
       );

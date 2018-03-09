@@ -22,7 +22,7 @@ async function initiateStream (timeline) {
       }
     };
 
-    this.streams[link.twitterID] = async () => { await r.destroy(); await stream.destroy(); };
+    this.streams[link.twitterID] = () => Promise.all([ r.destroy(), stream.destroy() ]);
 
     r.on('data', (data) => {
       data = data.toString();
@@ -36,6 +36,7 @@ async function initiateStream (timeline) {
         r.statusCode === 401 ||
         data.includes('"code":6')
       ) {
+        this.log(`Exiting for ${link.name} | ${data}`);
         rebuild = false;
         return this.streams[link.twitterID]();
       }
@@ -45,7 +46,7 @@ async function initiateStream (timeline) {
       }
     });
 
-    const checkIntegrity = setInterval(() => {
+    const checkIntegrity = setInterval(async () => {
       if (!rebuild) {
         // This'll only happen if the user revoked application access
         // in which case we don't need to do integrity checks anymore and the auth tokens will eventually be deleted
@@ -56,7 +57,7 @@ async function initiateStream (timeline) {
       // Check for stream integrity periodically, and if something is fucky, rebuild
       if (Date.now() - lastResponse.time > 60e3) {
         clearInterval(checkIntegrity);
-        this.streams[link.twitterID]();
+        await this.streams[link.twitterID]();
         this.log(`Rebuilding broken stream: ${link.name} | Content: ${lastResponse.content}`);
         initiateStream.call(this, timeline);
       }

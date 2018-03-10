@@ -1,5 +1,5 @@
 const GenericCommand = require(`${__dirname}/_GenericCommand.js`);
-const emojiRX = /<:(\w+):\d+>/;
+const emojiRX = /<a*:(\w+):\d+>/g;
 
 module.exports = GenericCommand({
   name: 'tweet',

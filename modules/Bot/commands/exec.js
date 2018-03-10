@@ -7,7 +7,7 @@ async function execCommand (msg, args) {
 
   exec(args.join(' '), async (e, stdout, stderr) => {
     if (!stderr && !stdout) {
-      msg.react('\u2611');
+      msg.addReaction('\u2611');
     } else {
       this.bot.sendMessage(msg.channel.id, `${stdout ? `Info: \`\`\`\n${stdout}\n\`\`\`` : ''}\n${stderr ? `Errors: \`\`\`\n${stderr}\`\`\`` : ''}`);
     }

@@ -51,6 +51,9 @@ async function initiateStream (timeline) {
         // This'll only happen if the user revoked application access
         // in which case we don't need to do integrity checks anymore and the auth tokens will eventually be deleted
         this.log(`Stopping integrity checks for ${link.name} | Content: ${lastResponse.content}`);
+        if (this.streams[link.twitterID]) {
+          await this.streams[link.twitterID]();
+        }
         return clearInterval(checkIntegrity);
       }
 

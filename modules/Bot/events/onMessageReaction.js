@@ -47,6 +47,10 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
   const res = await this.RestClient[action](link, { id: tweetID })
     .catch(async e => {
       let errorMessage;
+      if (!e.errors) {
+        this.log('onMessageReaction unknown error');
+        this.log(e);
+      }
       if (e.errors[0].code === 139 || e.errors[0].code === 327) {
         errorMessage = `You have already ${pastTense} this tweet.`;
       }

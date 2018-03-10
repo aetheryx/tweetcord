@@ -22,8 +22,6 @@ async function initiateStream (timeline) {
       }
     };
 
-    this.streams[link.twitterID] = () => Promise.all([ r.destroy(), stream.destroy() ]);
-
     r.on('data', (data) => {
       data = data.toString();
 
@@ -65,6 +63,12 @@ async function initiateStream (timeline) {
         initiateStream.call(this, timeline);
       }
     }, 60e3);
+
+    this.streams[link.twitterID] = () => Promise.all([
+      r.destroy(),
+      stream.destroy(),
+      clearInterval(checkIntegrity)
+    ]);
   });
 }
 

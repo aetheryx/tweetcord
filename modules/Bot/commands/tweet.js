@@ -34,7 +34,7 @@ module.exports = GenericCommand({
     })();
 
     if (status.status.length > 280) { // We only check for the length *after* we remove any potential links to be embedded
-      return `Your tweet is too big! You're ${status.status.length - 280} characters over the limit.`;
+      return `Your tweet is too big! You're ${status.status.length - 280} character(s) over the limit.`;
     }
 
     if (msg.mentions[0]) {

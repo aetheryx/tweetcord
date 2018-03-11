@@ -96,9 +96,18 @@ async function postMessage (res, timeline, link) {
   });
 
   if (msg && isTweet) {
-    await msg.addReaction('twitterLike:400076857493684226');
-    if (!['retweet', 'quote'].includes(event)) {
-      msg.addReaction('twitterRetweet:400076876430835722');
+    const permissions = msg.channel.permissionsOf(this.bot.user.id);
+    const [like, retweet] = permissions.has('externalEmojis') && permissions.has('addReactions')
+      ? ['twitterLike:400076857493684226', 'twitterRetweet:400076876430835722']
+      : permissions.has('addReactions')
+        ? ['❤',  '🔄']
+        : [];
+
+    if (like && retweet) {
+      await msg.addReaction(like);
+      if (!['retweet', 'quote'].includes(event)) {
+        msg.addReaction(retweet);
+      }
     }
 
     cooldowns.add(author.id_str);

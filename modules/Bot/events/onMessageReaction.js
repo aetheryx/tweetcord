@@ -33,6 +33,7 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
     return;
   }
 
+  let prompt;
   const tweetID = message.embeds[0].description.match(/"(.*)"\)/)[1];
 
   const link = await this.db.getLink(userID);
@@ -58,7 +59,7 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
         errorMessage = `This tweet was deleted${pastTense.includes('un') ? `, or you've never ${pastTense.replace('un', '')} this tweet` : ''}.`;
       }
 
-      message = await this.bot.sendMessage(message.channel.id, {
+      prompt = await this.bot.sendMessage(message.channel.id, {
         color: 0xFF0000,
         description: `${errorMessage} I am unable to ${action} this tweet.`,
         footer: { text: 'This message will self-destruct in 15 seconds.' }
@@ -66,14 +67,14 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
     });
 
   if (res) {
-    message = await this.bot.sendMessage(message.channel.id, {
+    prompt = await this.bot.sendMessage(message.channel.id, {
       title: `Successfully ${pastTense} the following tweet:`,
       description: message.embeds[0].description,
       footer: { text: 'This message will self-destruct in 15 seconds.' }
     });
-
-    setTimeout(message.delete.bind(message), 15e3);
   }
+
+  setTimeout(prompt.delete.bind(prompt), 15e3);
 }
 
 async function add (...args) {

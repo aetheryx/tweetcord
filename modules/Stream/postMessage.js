@@ -88,9 +88,9 @@ async function postMessage (res, timeline, link) {
       url: `https://twitter.com/${author.screen_name}`,
       icon_url: author.profile_image_url
     },
-    image: {
-      url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
-    },
+    /* image: {
+       url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : '' NOTE: See https://github.com/Aetheryx/tweetcord/issues/7 for more information as to why this is disabled
+     }, */
     description: tweetBody,
     timestamp: new Date(res.created_at),
     footer: { text: resource.place ? resource.place.full_name : author.location }

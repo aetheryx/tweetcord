@@ -57,7 +57,8 @@ async function postMessage (res, timeline, link) {
   if (
     cooldowns.has(author.id_str) ||
     (info[5] && target.id_str !== link.twitterID) ||
-    (timeline.isUserStream && author.id_str !== timeline.twitterID)
+    (timeline.isUserStream && author.id_str !== timeline.twitterID) ||
+    (resource.possibly_sensitive && !this.bot.getChannel(timeline.channelID).nsfw)
   ) {
     return;
   }

@@ -52,7 +52,7 @@ async function createRestClient () {
     async getBearer (code) {
       const options = {
         client_id: _this.bot.user.id,
-        client_secret: _this.config.bot.clientSecret,
+        client_secret: _this.config.bot.secret,
         grant_type: 'authorization_code',
         code,
         redirect_uri: `${_this.config.web.domain}/discord/cb`

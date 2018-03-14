@@ -7,7 +7,7 @@ async function donateCommand () {
       ' • Your name and a custom phrase on this command (At least $1.00)\n' +
       ' • Lots of hugs & kisses from (Any amount :kissing_heart:)\n\n' +
       'Donators so far:',
-    fields: this.donators,
+    fields: this.misc.donators,
     footer: { text: 'If you do decide to donate, please DM Aetheryx#2222 with proof.' }
   };
 }

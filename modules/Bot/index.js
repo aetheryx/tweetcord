@@ -13,7 +13,6 @@ function createBot () {
 
         this.commands = {};
         this.loadCommands();
-        this.loadDonators();
 
         this.MessageCollector = new _this.utils.MessageCollector(this);
 
@@ -23,12 +22,6 @@ function createBot () {
           .on('messageCreate', events.onMessageCreate.bind(_this))
           .on('messageReactionAdd', events.onMessageReaction.add.bind(_this))
           .on('messageReactionRemove', events.onMessageReaction.remove.bind(_this));
-      }
-
-      async loadDonators () {
-        _this.donators = await _this.utils.get({
-          url: 'api.github.com/gists/ecb8d961b77871a56e7d3a7145cfc179'
-        }).then(res => JSON.parse(res.files['donators.json'].content));
       }
 
       async loadCommands () {

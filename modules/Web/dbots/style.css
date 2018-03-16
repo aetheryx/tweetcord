@@ -1,0 +1,288 @@
+.page .shapes-background {
+  display:none;
+}
+body, html {
+  margin:0;
+  overflow:hidden;
+  height:100vh !important;
+  float:left;
+  width:100%;
+}
+body{
+  overflow-y:auto;
+}
+html{
+  background-image:url('https://cdn.discordapp.com/attachments/377132181144993793/419935478498983938/twitterIcon.png') !important;
+  background-size:20px !important;
+}
+.wrapper-page,
+article {
+  width:1500px;
+  margin:0 auto;
+}
+.wrapper-page:before{
+  z-index:100;
+  content:'';
+  position:fixed;
+  left:0;
+  top:0;
+  width:100vw;
+  height:100vh;
+  box-shadow:0 0 200px 0 black inset;
+  pointer-events:none;
+}
+#details .container {
+  margin-top:200px;
+  border:none !important;
+  background:#23272a;
+  margin:40px auto;
+  padding:40px !important;
+  box-shadow:0 0 8px 0 #5aa7d1,
+             0 0 100px 0 black;
+  border-radius:4px;
+  transition:.4s;
+}
+#details .container:hover{
+  box-shadow:0 0 28px 0 #5aa7d1,
+             0 0 100px 0 black;
+}
+#details .container .column,
+#details .container .is-tablet,
+#details .container .is-desktop{
+  display:inline-block !important;
+  width:100%;
+  text-align:center !important;
+}
+.bot-img{
+  overflow:visible !important;
+  margin:0 auto;
+}
+.bot-img img {
+  -webkit-filter:drop-shadow(0 0 2px #5aa7d1);
+  filter:drop-shadow(0 0 2px #5aa7d1);
+  transition:.4s;
+}
+#details .container:hover .bot-img img{
+  -webkit-filter:drop-shadow(0 0 10px #5aa7d1);
+  filter:drop-shadow(0 0 10px #5aa7d1);
+}
+.owners {
+  display:none;
+}
+.longdescription {
+  padding:0;
+  margin:20px;
+  display:block;
+  margin-top:100px;
+}
+#botprofileicon {
+  display:none;
+}
+#bot-details-page .bot-btns2 *,
+#bot-details-page .bot-btns * {
+  background:none;
+  border:1px solid #5aa7d1;
+  padding:2px 20px !important;
+  line-height:10px;
+  height:auto !important;
+}
+#details .container .column:first-child{
+  height:200px !important;
+  margin-top:-160px;
+  pointer-events:none;
+  width:calc(100% - 60px);
+}
+#details .container {
+  margin-top:200px;
+}
+#bot-details-page .bot-name {
+  display:none;
+}
+#bot-details-page .btn-like {
+  margin:0 auto;
+}
+#bot-info p.is-flex {
+  text-align:center;
+  margin:0 auto;
+  display:block !important;
+}
+#bot-details-page .lib {
+  display:none;
+}
+#bot-info {
+  text-align:center !important;
+}
+#bot-details-page #bot-info .status {
+  margin:-40px auto;
+  width:75px;
+  margin-bottom:20px;
+}
+#bot-details-page .bot-description {
+  color:white;
+  font-size:1.4em;
+  opacity:0.6;
+}
+#bot-details-page .bot-btns,
+#bot-details-page .bot-btns2 {
+  display:block;
+  float:left;
+  width:100%;
+}
+#details .is-widescreen {
+  padding-right:20px !important;
+}
+#bot-details-page .bot-btns a,
+#bot-details-page .bot-btns2 a{
+  display:inline-block;
+  padding:4px 60px !important;
+  margin:0 20px;
+  transition:0.2s;
+}
+#bot-details-page .bot-btns a:hover,
+#bot-details-page .bot-btns2 a:hover{
+  box-shadow:0 0 10px 0 #5aa7d1;
+  transition:0.1s;
+}
+#bot-details-page #details .column .servers {
+  display:inline-block;
+  margin:0 auto;
+}
+#bot-details-page #bot-stats p:first-child{
+  color:white;
+  opacity:0.4;
+}
+
+#bot-details-page #bot-stats p:nth-child(2) code{
+  border-radius:4px !important;
+  margin:10px auto;
+  display:inline-block;
+}
+
+#bot-details-page #bot-stats p:nth-child(3) span{
+  transform:scale(1.2);
+}
+#bot-details-page #bot-stats p:nth-child(3) span:hover{
+  opacity:1 !important;
+  cursor:default !important;
+}
+.titleandvote {
+  margin:100px
+}
+html{
+  background-image:unset !important;
+}
+.cool_thingy{
+  background-image:url('https://cdn.discordapp.com/attachments/377132181144993793/419935478498983938/twitterIcon.png') !important;
+  background-size:10px !important;
+  position:fixed;
+  left:0;right:0;top:0;bottom:0;
+  z-index:-1;
+  transform:scale(2.6) rotate(-10deg);
+  transition:0s;
+}
+@media screen and (max-width: 1200px) {
+  .wrapper-page{
+      width:100% !important;
+      float:left;
+  }
+  .titleandvote {
+      width:100% !important;
+      margin-left:-0px;
+  }
+  .titleandvote img {
+      height:auto !important;
+      max-width:600px;
+      width:100% !important;
+  }
+  #bot-info p.is-flex {
+      margin-left:-40px;
+  }
+  #bot-details-page .bot-btns,
+  #bot-details-page .bot-btns2 {
+      margin:0 -30px;
+      width:calc(100% + 66px);
+  }
+  #bot-details-page .bot-btns a,
+  #bot-details-page .bot-btns2 a {
+      width:calc(100% - 40px);
+      margin:4px 0;
+      float:left;
+      margin-left:20px !important;
+      padding:4px 0 !important;
+  }
+  #bot-details-page .bot-description {
+      float:left;
+      width:calc(100% - 20px) !important;
+  }
+  .page .container .is-10-mobile,
+  .page .container .is-two-thirds-tablet,
+  .page .container .is-4-desktop,
+  .page .container .is-offset-2-tablet,
+  .page .container .is-offset-1-mobile,
+  .page .container .is-offset-1-desktop,
+  .page .container .column,
+  .page .container .is-mobile,
+  .details .is-widescreen{
+      float:left;
+      margin:0 !important;
+      padding:0 !important;
+      width:calc(100% - 20px) !important;
+      margin-left:10px !important;
+  }
+  #bot-details-page #details .column:nth-child(2) {
+      margin-top:100px !important;
+  }
+  #bot-info p.is-flex {
+      float:left;
+      width:130% !important;
+  }
+  #bot-details-page .bot-description {
+      width:100% !important;
+      float:left !important;
+      margin:0 !important;
+      margin-top:20px !important;
+  }
+  #bot-details-page #details .column {
+      float:left !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+  }
+  #bot-details-page #bot-stats .btns {
+      float:left !important;
+      width:100%;
+      margin:10px 0 !important;
+      padding:0 !important;
+  }
+  #bot-details-page #details .column .servers {
+      margin:0 auto !important;
+      padding:4px 10px !important;
+  }
+  #bot-details-page #details .is-widescreen .column:nth-child(1) {
+      margin-top:-160px !important;
+  }
+  .status{
+      display:none;
+  }
+  #bot-info p.is-flex {
+      display:none !important;
+  }
+  #bot-details-page #details .column:nth-child(2){
+      margin-top:20px !important;
+  }
+  #bot-details-page #details .column {
+      border:none !important;
+  }
+}
+html {
+background:#23272a !important;
+}
+#menu {
+  background:#2a2c31 !important;
+}
+#details .container .bot-img{
+  box-shadow:none !important;
+}
+.nicememeken{
+  max-width:800px;
+}

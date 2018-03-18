@@ -50,6 +50,25 @@ async function onMessageCreate (msg) {
         }
       })
       .catch(e => {
+        if (e.errors && e.errors[0].code === 261) {
+          return this.bot.sendMessage(msg.channel.id, {
+            title: 'Ehmm... fuck.',
+            color: 0xFF0000,
+            description: 'On 18th March 2018, around 6am PST, Tweetcord\'s Twitter application was given a read-only block by Twitter.',
+            fields: [
+              {
+                name: 'What does this mean?',
+                value: 'There\'s alot that can go wrong when making a bot. Twitter didn\'t actually tell me *why* Tweetcord was given a read-only block, but it could be many things - a bug that caused Tweetcord to spam their API, etc.'
+              },
+              {
+                name: 'What now?',
+                value: 'I am talking to Twitter support to get this block lifted as soon as possible. Until then, there\'s nothing we can do but wait.'
+              }
+            ],
+            footer: { text: '- Aetheryx#2222, the developer of Tweetcord' }
+          });
+        }
+
         this.log(e.stack || inspect(e), 'error');
         msg.channel.createMessage(`Something went wrong while executing this command. The error has been logged. \nPlease join here (discord.gg/Yphr6WG) if the issue persists.\n\`\`\`${e.message || inspect(e)}\`\`\``);
       });

@@ -17,7 +17,7 @@ async function evalCommand (msg, args) {
         showHidden: true
       });
     }
-    result = result.replace(this.misc.credentialRX, 'i think the fuck not you trick ass bitch');
+    result = this.misc.redact(result);
   } catch (err) {
     result = err.message;
   }

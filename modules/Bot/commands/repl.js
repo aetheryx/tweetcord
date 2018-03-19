@@ -6,19 +6,26 @@ async function replCommand (msg) {
   createContext(ctx);
 
   let lastRanCommandOutput;
+  let statementQueue = [];
 
   const runCommand = async () => {
-    const commandMsg = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 30e3);
-    if (commandMsg.content.startsWith('//')) {
-      return runCommand();
+    const commandMsg = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 60e3);
+    if (!commandMsg) {
+      return this.bot.sendMessage(msg.channel.id, 'Timed out, automatically exiting REPL...');
     }
 
-    if (commandMsg.content === '.exit') {
+    let { content } = commandMsg;
+
+    if (content.startsWith('//')) {
+      return runCommand();
+    }
+    if (content === '.exit') {
       return this.bot.sendMessage(msg.channel.id, 'Successfully exited.');
     }
-    if (commandMsg.content === '.clear') {
+    if (content === '.clear') {
       ctx = { ...this };
       createContext(ctx);
+      statementQueue = [];
       this.bot.sendMessage(msg.channel.id, 'Successfully cleared variables.');
       return runCommand();
     }
@@ -26,9 +33,23 @@ async function replCommand (msg) {
     ctx.msg = commandMsg;
     ctx._ = lastRanCommandOutput;
 
+    if (content.endsWith('}') && statementQueue[0]) {
+      // Closing bracket - we consume the statement queue
+      statementQueue.push(content);
+      content = statementQueue.join('\n');
+      statementQueue = [];
+    } else if (content.endsWith('{') || statementQueue[0]) {
+      // Opening bracket - we either open the statement queue or append to it
+      statementQueue.push(content.endsWith('{')
+        ? content
+        : '  ' + content); // Indentation for appended statements
+      this.bot.sendMessage(msg.channel.id, `\`\`\`js\n${statementQueue.join('\n')}\n  ...\n\`\`\``);
+      return runCommand();
+    }
+
     let result;
     try {
-      result = await runInContext(commandMsg.content, ctx, {
+      result = await runInContext(content, ctx, {
         filename: 'aetheryx.repl'
       });
 
@@ -45,13 +66,13 @@ async function replCommand (msg) {
       result = `ERROR:\n${typeof error === 'string' ? error : inspect(error, { depth: 1 })}`;
     }
 
-    this.bot.sendMessage(msg.channel.id, '```js\n' + result.replace(this.misc.credentialRX, 'i think the fuck not you trick ass bitch') + '\n```');
+    this.bot.sendMessage(msg.channel.id, '```js\n' + this.misc.redact(result) + '\n```');
 
     runCommand();
   };
 
   runCommand();
-  return 'REPL started. Run `.exit` to exit. Run `.clear` to clear.';
+  return 'REPL started. Available commands:\n```\n.exit\n.clear\n_\n```';
 }
 
 module.exports = {

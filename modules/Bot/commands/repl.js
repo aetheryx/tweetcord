@@ -45,7 +45,7 @@ async function replCommand (msg) {
         openingBrackets = 0;
       } else {
         statementQueue.push(content);
-        msg.channel.send(`\`\`\`js\n${statementQueue.join('\n')}\n  ...\n\`\`\``);
+        this.bot.sendMessage(msg.channel.id, `\`\`\`js\n${statementQueue.join('\n')}\n  ...\n\`\`\``);
         return runCommand();
       }
     } else if (content.endsWith('{') || statementQueue[0]) {

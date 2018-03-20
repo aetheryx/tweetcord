@@ -7,7 +7,8 @@ async function replCommand (msg) {
 
   let lastRanCommandOutput;
   let statementQueue = [];
-
+  let openingBrackets = 0;
+  let closingBrackets = 0;
   const runCommand = async () => {
     const commandMsg = await this.bot.MessageCollector.awaitMessage(msg.channel.id, msg.author.id, 60e3);
     if (!commandMsg) {
@@ -34,11 +35,22 @@ async function replCommand (msg) {
     ctx._ = lastRanCommandOutput;
 
     if (content.endsWith('}') && statementQueue[0]) {
-      // Closing bracket - we consume the statement queue
-      statementQueue.push(content);
-      content = statementQueue.join('\n');
-      statementQueue = [];
+      closingBrackets++;
+      if (closingBrackets === openingBrackets) {
+        // Matching Closing and Opening brackets - we consume the statement queue
+        statementQueue.push(content);
+        content = statementQueue.join('\n');
+        statementQueue = [];
+        closingBrackets = 0;
+        openingBrackets = 0;
+      } else {
+        statementQueue.push(content);
+        msg.channel.send(`\`\`\`js\n${statementQueue.join('\n')}\n  ...\n\`\`\``);
+        return runCommand();
+      }
     } else if (content.endsWith('{') || statementQueue[0]) {
+      if (content.endsWith('{')) openingBrackets++;
+      if (content.endsWith('}') || content.startsWith('}')) closingBrackets++;
       // Opening bracket - we either open the statement queue or append to it
       statementQueue.push(content.endsWith('{')
         ? content

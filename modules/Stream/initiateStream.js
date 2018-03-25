@@ -18,7 +18,13 @@ async function initiateStream (timeline) {
       chunk = currentMessage;
       if (chunk.endsWith('\r\n')) {
         currentMessage = '';
-        return JSON.parse(chunk);
+        try {
+          chunk = JSON.parse(chunk);
+        } catch (_) {
+          // Probably corrupt JSON. We log it to make sure:
+          this.log(`Failed to parse JSON: ${chunk}`);
+        }
+        return chunk;
       }
     };
 

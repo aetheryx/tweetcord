@@ -1,10 +1,10 @@
 async function donateCommand () {
   return {
-    description: 'Tweetcord will always remain a fully free service. However, if you would like to donate, you can do so [here](https://paypal.me/Aether2017) (PayPal) or to `18UNsWHGvskZSxKc6LvyaqwKk5FUf2af4D` (BTC).' +
+    description: 'Tweetcord will always remain a fully free service. However, if you would like to donate, you can do so [here](https://paypal.me/Aether2017) (PayPal) or on [my Patreon](https://www.patreon.com/aetheryx).' +
       '\n\nAs a donator, you will receive:\n' +
       ' • A `Donator` role on [Aetheryx\' Hub](https://discord.gg/Yphr6WG) (Any amount)\n' +
       ' • Your name and a custom phrase on the #donators channel on [Aetheryx\' Hub](https://discord.gg/Yphr6WG) (Any amount)\n' +
-      ' • Your name and a custom phrase on this command (At least $1.00)\n' +
+      ' • Your name and a custom phrase on this command (At least $5.00)\n' +
       ' • Lots of hugs & kisses from (Any amount :kissing_heart:)\n\n' +
       'Donators so far:',
     fields: this.misc.donators,

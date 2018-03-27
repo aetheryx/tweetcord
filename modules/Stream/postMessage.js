@@ -52,7 +52,7 @@ async function postMessage (res, timeline, link) {
   const source = res[info[2]];
   const resource = res.text ? res : source || {};
   const target = (source && source[info[3]]) || res[info[3]] || author;
-  const isTweet = info[4];
+  const isTweet = info[4] || event === 'favorite';
 
   if (
     cooldowns.has(author.id_str) ||

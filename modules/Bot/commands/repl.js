@@ -22,10 +22,16 @@ async function replCommand (msg) {
     }
 
     REPL.ctx.msg = commandMsg;
+    let before, after;
 
     let result;
     try {
+      before = process.hrtime();
       result = await REPL.execute(commandMsg.content);
+      after = process.hrtime(before);
+      after = after[0]
+        ? `${(after[0] + after[1] / 1e9).toLocaleString()}s`
+        : `${(after[1] / 1e3).toLocaleString()}μs`;
     } catch (e) {
       const error = e.stack || e;
       result = `ERROR:\n${typeof error === 'string' ? error : inspect(error, { depth: 1 })}`;
@@ -39,14 +45,14 @@ async function replCommand (msg) {
     }
 
     result = this.misc.redact(result);
-    if (result.length > 1980) {
+    if (result.length > 1950) {
       // If it's over the 2k char limit, we break off the result, pop the last line and close off
-      result = result.slice(0, 1980).split('\n');
+      result = result.slice(0, 1950).split('\n');
       result.pop();
       result = result.join('\n') + '\n\n...';
     }
 
-    this.bot.sendMessage(msg.channel.id, '```js\n' + result + '\n```');
+    this.bot.sendMessage(msg.channel.id, '```js\n' + result + '\n```\n' + `*Execution took ${after}*`);
 
     runCommand();
   };

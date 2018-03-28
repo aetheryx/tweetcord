@@ -1,5 +1,5 @@
 {
-    "extends": "semistandard",
+    "extends": [ "semistandard", "plugin:react/recommended" ],
     "parserOptions": {
         "ecmaVersion": 8,
         "sourceType": "script"
@@ -8,6 +8,8 @@
         "no-multi-spaces": "off",
         "key-spacing": "off",
         "standard/array-bracket-even-spacing": "off",
-        "camelcase": "off"
+        "camelcase": "off",
+
+        "react/prop-types": "off"
     }
 }

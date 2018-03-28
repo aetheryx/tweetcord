@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "test": "eslint ."
   },
   "repository": {
@@ -18,12 +20,22 @@
   },
   "homepage": "https://github.com/Aetheryx/tweetcord#readme",
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "ejs": "^2.5.8",
     "eris": "^0.8.5",
+    "eslint-plugin-react": "^7.7.0",
     "express": "^4.16.3",
     "express-session": "1.15.6",
     "mongodb": "^3.0.4",
-    "programmatic-repl": "^1.1.4"
+    "programmatic-repl": "^1.1.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "webpack": "^4.3.0",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   },
   "devDependencies": {
     "eslint": "^4.18.2",
@@ -32,6 +44,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.0"
+    "eslint-plugin-standard": "^3.0.0",
+    "webpack-serve": "^0.3.0"
   }
 }

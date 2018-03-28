@@ -21,5 +21,25 @@ module.exports = {
         url: donatorURL
       }).then(res => JSON.parse(res.files['donators.json'].content))
     };
+
+    if (this.config.dev) {
+      const { watch } = require('chokidar');
+      const { exec } = require('child_process');
+
+      const watcher = watch(`${__dirname}/Web/views/`, {
+        persistent: true,
+        ignored: /build/
+      });
+
+      console.log('watching');
+
+      watcher.on('change', path => {
+        console.log('Building...');
+        exec('webpack --mode production', (e, stdout, stderr) => {
+          console.log(stdout);
+        });
+      });
+    }
+
   }
 };

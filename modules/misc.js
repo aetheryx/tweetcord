@@ -35,7 +35,7 @@ module.exports = {
 
       watcher.on('change', path => {
         console.log('Building...');
-        exec('webpack --mode production', (e, stdout, stderr) => {
+        exec('webpack --mode development', (e, stdout, stderr) => {
           console.log(stdout);
         });
       });

@@ -83,3 +83,11 @@ body {
   -webkit-filter:drop-shadow(0 0 6px #5aa7d1);
   filter:drop-shadow(0 0 6px #5aa7d1);
 }
+
+.heroo {
+  transition: opacity 0.5s;
+  position: fixed;
+  top: 3.25rem;
+  left: 0;
+  right: 0;
+}

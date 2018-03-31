@@ -12,19 +12,19 @@ module.exports = class Navbar extends React.Component {
 
         <div className="navbar-menu">
           <div className="navbar-end">
-            <a className="navbar-item" onClick={this.props.goto('contact')}>
+            <a className="navbar-item" onClick={this.props.goto(0)}>
               Contact
             </a>
 
-            <a className="navbar-item" onClick={this.props.goto('page1')}>
+            <a className="navbar-item" onClick={this.props.goto(1)}>
               page 1
             </a>
 
-            <a className="navbar-item" onClick={this.props.goto('page2')}>
+            <a className="navbar-item" onClick={this.props.goto(2)}>
               page 2
             </a>
 
-            <a className="navbar-item" onClick={this.props.goto('page3')}>
+            <a className="navbar-item" onClick={this.props.goto(3)}>
               page 3
             </a>
           </div>

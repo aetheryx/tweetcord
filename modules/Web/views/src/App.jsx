@@ -1,8 +1,17 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Navbar = require('./components/Navbar');
-const Hero = require('./components/Hero');
 
+const { Transition, TransitionGroup } = require('react-transition-group');
+
+const duration = 200;
+const transitionStyles = {
+  entering: { opacity: 0 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 0 },
+  exited: { opacity: 0 }
+};
+
+const Navbar = require('./components/Navbar.jsx');
 const pages = require('./pages');
 
 class App extends React.Component {
@@ -10,21 +19,8 @@ class App extends React.Component {
     super();
 
     this.state = {
-      page: 'contact',
-      unloading: false
+      page: 0
     };
-  }
-
-  componentDidUnmount () {
-    this.setState({
-      unloading: true
-    });
-
-    setTimeout(() => {
-      this.setState({
-        unloading: false
-      });
-    }, 1000);
   }
 
   goto (page) {
@@ -32,14 +28,18 @@ class App extends React.Component {
   }
 
   render () {
-    const Page = pages[this.state.page];
-
     return (
-      <div style={this.state.unloading ? { backgroundColor: 'red' } : {}}>
-        <Navbar
-          goto={this.goto.bind(this)}
-        />
-        <Page />
+      <div className="fadeIn">
+        <Navbar goto={this.goto.bind(this)} />
+        {pages.map((Page, index) => (
+          <Transition in={this.state.page === index} timeout={500} mountOnEnter unmountOnExit key={index}>
+            {state => {
+              return (
+                <Page style={transitionStyles[state]} />
+              );
+            }}
+          </Transition>
+        ))}
       </div>
     );
   }

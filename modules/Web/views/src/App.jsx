@@ -1,14 +1,13 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const { Transition, TransitionGroup } = require('react-transition-group');
+const { Transition } = require('react-transition-group');
 
-const duration = 200;
 const transitionStyles = {
-  entering: { opacity: 0 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 }
+  entering: { opacity: 0, transition: 'opacity 1s' },
+  entered: { opacity: 1, transition: 'opacity 1s' },
+  exiting: { opacity: 0, transition: 'opacity 1s' },
+  exited: { opacity: 0, transition: 'opacity 1s' }
 };
 
 const Navbar = require('./components/Navbar.jsx');
@@ -32,10 +31,12 @@ class App extends React.Component {
       <div className="fadeIn">
         <Navbar goto={this.goto.bind(this)} />
         {pages.map((Page, index) => (
-          <Transition in={this.state.page === index} timeout={500} mountOnEnter unmountOnExit key={index}>
+          <Transition in={this.state.page === index} timeout={500} mountOnEnter unmountOnExit key={index} className="page">
             {state => {
               return (
-                <Page style={transitionStyles[state]} />
+                <div className="page">
+                  <Page style={transitionStyles[state]} />
+                </div>
               );
             }}
           </Transition>

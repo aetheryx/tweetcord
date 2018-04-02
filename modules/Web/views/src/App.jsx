@@ -4,10 +4,10 @@ const ReactDOM = require('react-dom');
 const { Transition } = require('react-transition-group');
 
 const transitionStyles = {
-  entering: { opacity: 0 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 }
+  entering: { opacity: 0, transition: 'opacity 1s' },
+  entered: { opacity: 1, transition: 'opacity 1s' },
+  exiting: { opacity: 0, transition: 'opacity 1s' },
+  exited: { opacity: 0, transition: 'opacity 1s' }
 };
 
 const Navbar = require('./components/Navbar.jsx');
@@ -37,6 +37,7 @@ class App extends React.Component {
                 <Page />
               </div>
             )}
+
           </Transition>
         ))}
       </div>

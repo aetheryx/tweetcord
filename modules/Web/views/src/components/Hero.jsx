@@ -5,6 +5,7 @@ class Hero extends React.Component {
     const hero = (
       <div style={this.props.style}>
         <section className="hero" style={{ display: 'flex', width: '100%', backgroundColor: '#5aa7d1', color: 'white' }}>
+
           <div className="hero-body" style={{ padding: '24px' }}>
             <div className="container">
               <h1 className="title is-primary">

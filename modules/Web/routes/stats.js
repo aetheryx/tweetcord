@@ -4,7 +4,7 @@ async function init () {
     stats = {
       'Guilds': this.bot.guilds.size,
       'Linked users': await this.dbTables.links.find({}).toArray().then(_ => _.length),
-      'Streams': await this.dbTables.links.find({}).toArray().then(_ => _.length)
+      'Streams': await this.dbTables.timelines.find({}).toArray().then(_ => _.length)
     };
   };
   refreshStats();

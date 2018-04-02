@@ -1,9 +1,8 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const { Transition, TransitionGroup } = require('react-transition-group');
+const { Transition } = require('react-transition-group');
 
-const duration = 200;
 const transitionStyles = {
   entering: { opacity: 0 },
   entered: { opacity: 1 },
@@ -32,12 +31,12 @@ class App extends React.Component {
       <div className="fadeIn">
         <Navbar goto={this.goto.bind(this)} />
         {pages.map((Page, index) => (
-          <Transition in={this.state.page === index} timeout={500} mountOnEnter unmountOnExit key={index}>
-            {state => {
-              return (
-                <Page style={transitionStyles[state]} />
-              );
-            }}
+          <Transition in={this.state.page === index} timeout={700} mountOnEnter unmountOnExit key={index} className="page">
+            {state => (
+              <div className="page" style={transitionStyles[state]}>
+                <Page />
+              </div>
+            )}
           </Transition>
         ))}
       </div>

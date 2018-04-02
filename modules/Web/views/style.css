@@ -84,10 +84,43 @@ body {
   filter:drop-shadow(0 0 6px #5aa7d1);
 }
 
-.heroo {
-  transition: opacity 0.5s;
+.page {
   position: fixed;
   top: 3.25rem;
   left: 0;
   right: 0;
+  transition: opacity 1s;
+}
+
+#card {
+  background-color: #23272a;
+  font-size: 170%;
+  width: 500px;
+  margin: auto;
+  margin-top: 5rem;
+  border-radius: 4px;
+  padding: 0.75rem;
+  
+  transition: 0.2s;
+  filter: drop-shadow(0 0 2px #5aa7d1);
+}
+
+#card:hover {
+  filter: drop-shadow(0 0 6px #5aa7d1);
+}
+
+.inner {
+  float: left;
+}
+
+td {
+  padding-right: 10px;
+}
+
+table {
+  color: white;
+}
+
+.title, .subtitle {
+  color: white;
 }

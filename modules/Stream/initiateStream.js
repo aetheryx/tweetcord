@@ -40,7 +40,6 @@ async function initiateStream (timeline) {
         r.statusCode === 401 ||
         data.includes('"code":6')
       ) {
-        this.log(`Exiting for ${link.name} | ${data}`);
         rebuild = false;
         return this.streams[link.twitterID]();
       }
@@ -65,7 +64,6 @@ async function initiateStream (timeline) {
       if (Date.now() - lastResponse.time > 60e3) {
         clearInterval(checkIntegrity);
         await this.streams[link.twitterID]();
-        this.log(`Rebuilding broken stream: ${link.name} | Content: ${lastResponse.content}`);
         initiateStream.call(this, timeline);
       }
     }, 60e3);

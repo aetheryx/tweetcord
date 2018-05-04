@@ -19,6 +19,7 @@ const replies = {
 async function postMessage (res, timeline, link) {
   try {
     if (
+      (typeof res === 'string' && res.endsWith('request Timedout.')) ||
       res.delete || // TODO: Parse delete events
       res.direct_message || // TODO: Parse DMs
       (res.event && !events.includes(res.event)) ||
@@ -88,7 +89,7 @@ async function postMessage (res, timeline, link) {
         url: `https://twitter.com/${author.screen_name}`,
         icon_url: author.profile_image_url
       },
-      ...(this.bot.getChannel(timeline.channelID).nsfw ? { // Image previews are only available in NSFW channels - see https://github.com/Aetheryx/tweetcord/issues/7
+      ...(this.bot.getChannel(timeline.channelID) && this.bot.getChannel(timeline.channelID).nsfw ? { // Image previews are only available in NSFW channels - see https://github.com/Aetheryx/tweetcord/issues/7
         image: {
           url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
         }

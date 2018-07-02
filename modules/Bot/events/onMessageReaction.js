@@ -14,18 +14,12 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
     .guilds.get(message.channel.guild.id)
     .channels.get(message.channel.id)
     .getMessage(message.id)
-    .catch(e => {
-      if (e.message.includes('50001')) {
-        this.bot.sendMessage(message.channel.id, {
-          color: 0xFF0000,
-          title: '⚠',
-          description: 'I seem to be missing the `Read Message History` permission for this channel. I need this permission to work!'
-        });
-      }
-    });
+    .catch(e => null);
 
   if (
     !message ||
+    !message.embeds[0] ||
+    !message.embeds[0].description ||
     message.author.id !== this.bot.user.id ||
     (this.bot.users.get(userID) || { bot: true }).bot ||
     !emoji.id || !['400076876430835722', '400076857493684226'].includes(emoji.id)
@@ -33,7 +27,6 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
     return;
   }
 
-  let prompt;
   const tweetID = message.embeds[0].description.match(/"(.*)"\)/)[1];
 
   const link = await this.db.getLink(userID);
@@ -45,8 +38,15 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
 
   const pastTense = (action.startsWith('un') ? 'un' : '') + (action.endsWith('like') ? 'liked' : 'retweeted');
 
-  const res = await this.RestClient[action](link, { id: tweetID })
-    .catch(async e => {
+  this.RestClient[action](link, { id: tweetID })
+    .then(() => {
+      this.bot.sendMessage(userID, {
+        title: `Successfully ${pastTense} the following tweet:`,
+        description: message.embeds[0].description,
+        footer: { text: 'This message will self-destruct in 15 seconds.' }
+      }, true);
+    })
+    .catch(e => {
       let errorMessage;
       if (!e.errors) {
         this.log('onMessageReaction unknown error');
@@ -59,22 +59,11 @@ async function onMessageReactionGeneric (type, message, emoji, userID) {
         errorMessage = `This tweet was deleted${pastTense.includes('un') ? `, or you've never ${pastTense.replace('un', '')} this tweet` : ''}.`;
       }
 
-      prompt = await this.bot.sendMessage(message.channel.id, {
+      this.bot.sendMessage(userID, {
         color: 0xFF0000,
-        description: `${errorMessage} I am unable to ${action} this tweet.`,
-        footer: { text: 'This message will self-destruct in 15 seconds.' }
-      });
+        description: `${errorMessage} I am unable to ${action} this tweet.`
+      }, true);
     });
-
-  if (res) {
-    prompt = await this.bot.sendMessage(message.channel.id, {
-      title: `Successfully ${pastTense} the following tweet:`,
-      description: message.embeds[0].description,
-      footer: { text: 'This message will self-destruct in 15 seconds.' }
-    });
-  }
-
-  setTimeout(prompt.delete.bind(prompt), 15e3);
 }
 
 async function add (...args) {

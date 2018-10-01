@@ -7,6 +7,7 @@
 
 ~~A Discord bot that allows you to interact with Twitter from Discord. Get the bot here~~
 THIS PROJECT HAS BEEN DISCONTINUED DUE TO BREAKING AND EXPENSIVE CHANGES IN TWITTER'S API
+(EXPLAINED HERE](https://tc.bad-me.me/989c52.png)
 
 ## License
 This project is licensed under GPLv3 - see the [LICENSE file](https://github.com/Aetheryx/tweetcord/blob/master/LICENSE) for more information.

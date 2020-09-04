@@ -23,7 +23,7 @@
     "eris": "^0.8.5",
     "express": "^4.16.3",
     "express-session": "1.15.6",
-    "mongodb": "^3.0.4",
+    "mongodb": "^3.1.13",
     "programmatic-repl": "^1.1.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

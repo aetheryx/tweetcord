@@ -25,7 +25,7 @@ class Hero extends React.Component {
     if (this.props.href) {
       return (
         <a href={this.props.href}>
-          <hero />
+          {hero}
         </a>
       );
     } else {

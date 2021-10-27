@@ -31,7 +31,7 @@ async function postMessage (res, timeline, link) {
     let event;
 
     if (res.event in replies) {
-      event = Object.keys(replies).find(g => g === res.event);
+      event = res.event;
     } else if (res.retweeted_status) {
       event = 'retweet';
     } else if (res.is_quote_status || (res.target_object && res.target_object.is_quote_status)) {
@@ -53,7 +53,7 @@ async function postMessage (res, timeline, link) {
     const author = res[info[1]];
     const source = res[info[2]];
     const resource = res.text ? res : source || {};
-    const target = (source && source[info[3]]) || res[info[3]] || author;
+    const target = source?.[info[3]] || res[info[3]] || author;
     const isTweet = info[4] || event === 'favorite';
 
     if (
@@ -89,14 +89,14 @@ async function postMessage (res, timeline, link) {
         url: `https://twitter.com/${author.screen_name}`,
         icon_url: author.profile_image_url
       },
-      ...(this.bot.getChannel(timeline.channelID) && this.bot.getChannel(timeline.channelID).nsfw ? { // Image previews are only available in NSFW channels - see https://github.com/Aetheryx/tweetcord/issues/7
+      ...(this.bot.getChannel(timeline.channelID)?.nsfw ? { // Image previews are only available in NSFW channels - see https://github.com/Aetheryx/tweetcord/issues/7
         image: {
           url: resource.extended_entities && resource.extended_entities.media ? resource.extended_entities.media[0].media_url_https : ''
         }
       } : {}),
       description: tweetBody,
       timestamp: new Date(res.created_at),
-      footer: { text: resource.place ? resource.place.full_name : author.location }
+      footer: { text: resource.place.full_name ?? author.location }
     });
 
     if (msg && isTweet) {

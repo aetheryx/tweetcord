@@ -11,11 +11,11 @@ class Hero extends React.Component {
               <h1 className="title is-primary">
                 {this.props.title}
               </h1>
-              {this.props.subtitle &&
+              {this.props.subtitle && (
                 <h2 className="subtitle">
                   {this.props.subtitle}
                 </h2>
-              }
+              )}
             </div>
           </div>
         </section>
